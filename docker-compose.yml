@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: delta
+      POSTGRES_USER: delta
+      POSTGRES_PASSWORD: delta
+    ports:
+      - "5432:5432"
+    volumes:
+      - delta-db:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    depends_on:
+      - db
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/delta
+      DB_USER: delta
+      DB_PASSWORD: delta
+    ports:
+      - "8080:8080"
+
+volumes:
+  delta-db:
