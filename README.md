@@ -40,10 +40,3 @@ Put your computer's local IP in `.env` (`EXPO_PUBLIC_API_URL=http://192.168.x.x:
 | GET | `/api/summary/weekly` | weekly summary |
 
 Everything except onboarding needs `Authorization: Bearer <token>`.
-
-## TODO
-
-- plan (F2) after coach review
-- confirm health questions with the coach
-- delete my data endpoint
-- sunday push notification
