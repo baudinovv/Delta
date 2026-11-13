@@ -1,16 +1,14 @@
-import * as SecureStore from 'expo-secure-store';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { Platform } from 'react-native';
 
 import { api, ApiError } from './api';
+import { storage } from './storage';
 
 const TOKEN_KEY = 'delta.token';
 
-let webToken: string | null = null;
 const store = {
-  get: async () => (Platform.OS === 'web' ? webToken : SecureStore.getItemAsync(TOKEN_KEY)),
-  set: async (v: string) => (Platform.OS === 'web' ? void (webToken = v) : SecureStore.setItemAsync(TOKEN_KEY, v)),
-  clear: async () => (Platform.OS === 'web' ? void (webToken = null) : SecureStore.deleteItemAsync(TOKEN_KEY)),
+  get: () => storage.get(TOKEN_KEY),
+  set: (v: string) => storage.set(TOKEN_KEY, v),
+  clear: () => storage.remove(TOKEN_KEY),
 };
 
 type Session = {

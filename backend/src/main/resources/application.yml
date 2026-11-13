@@ -21,3 +21,6 @@ delta:
     - Squat
     - Bench Press
     - Seated Row
+  ai:
+    gemini-api-key: ${GEMINI_API_KEY:}
+    model: ${GEMINI_MODEL:gemini-2.5-flash}

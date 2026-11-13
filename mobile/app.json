@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "app.delta.pilot"
@@ -25,11 +25,20 @@
     },
     "plugins": [
       "expo-router",
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-localization",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Delta uses the camera to photograph meals and estimate calories.",
+          "photosPermission": "Delta reads a photo you pick to estimate its calories."
+        }
+      ]
     ],
     "scheme": "delta",
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "backgroundColor": "#0A0C0F"
   }
 }

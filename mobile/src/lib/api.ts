@@ -18,7 +18,78 @@ export type OnboardingRequest = {
   goal: Goal;
   daysPerWeek: number;
   minutesPerSession: number;
+  body?: Body;
 };
+
+export type Sex = 'MALE' | 'FEMALE';
+export type Body = { sex?: Sex; birthYear?: number; heightCm?: number; weightKg?: number };
+
+export type Targets = { kcal: number; proteinG: number; fatG: number; carbsG: number; custom: boolean };
+
+export type Me = {
+  userId: string;
+  goal: Goal;
+  daysPerWeek: number;
+  minutesPerSession: number;
+  sex?: Sex | null;
+  birthYear?: number | null;
+  heightCm?: number | null;
+  weightKg?: number | null;
+  calorieTarget?: number | null;
+  targets?: Targets | null;
+};
+
+export type ProfileUpdate = Body & {
+  goal: Goal;
+  daysPerWeek: number;
+  minutesPerSession: number;
+  calorieTarget?: number | null;
+};
+
+export type Meal = 'BREAKFAST' | 'LUNCH' | 'DINNER' | 'SNACK';
+export type FoodItem = {
+  name: string;
+  grams?: number | null;
+  kcal: number;
+  proteinG?: number;
+  fatG?: number;
+  carbsG?: number;
+};
+export type FoodEntry = Required<Pick<FoodItem, 'name' | 'kcal'>> &
+  FoodItem & { id: string; meal: Meal; source: 'MANUAL' | 'PHOTO' };
+export type Totals = { kcal: number; proteinG: number; fatG: number; carbsG: number };
+export type FoodDay = { date: string; targets?: Targets | null; totals: Totals; entries: FoodEntry[] };
+export type Analysis = {
+  food: boolean;
+  dish: string;
+  items: FoodItem[];
+  totals: Totals;
+  confidence: 'low' | 'medium' | 'high';
+  note?: string | null;
+  demo: boolean;
+};
+
+export type CoachMessage = { id: string; role: 'user' | 'coach'; content: string; createdAt: string };
+export type CoachThread = { messages: CoachMessage[]; demo: boolean };
+
+export type DashboardDay = { date: string; kcal: number; sets: number; volumeKg: number };
+export type Lift = { exercise: string; weightKg: number; reps: number; e1rmByWeek: (number | null)[] };
+export type Dashboard = {
+  date: string;
+  targets?: Targets | null;
+  kcalToday: number;
+  proteinToday: number;
+  fatToday: number;
+  carbsToday: number;
+  setsToday: number;
+  workoutsThisWeek: number;
+  plannedPerWeek: number;
+  streakDays: number;
+  days: DashboardDay[];
+  lifts: Lift[];
+};
+
+export type Lang = 'ru' | 'en';
 
 export type OnboardingResponse =
   | { status: 'ADMITTED'; userId: string; token: string }
@@ -57,7 +128,7 @@ async function request<T>(path: string, init: RequestInit & { token?: string | n
   try {
     res = await fetch(`${API_URL}${path}`, { ...init, headers });
   } catch {
-    throw new ApiError(0, 'NETWORK', `Can't reach the server at ${API_URL}. Check your connection.`);
+    throw new ApiError(0, 'NETWORK', 'No connection. Try again.');
   }
   if (res.status === 204) return undefined as T;
   const body = await res.json().catch(() => null);
@@ -71,7 +142,35 @@ export const api = {
   onboard: (req: OnboardingRequest) =>
     request<OnboardingResponse>('/api/onboarding', { method: 'POST', body: JSON.stringify(req) }),
 
-  me: (token: string) => request<{ userId: string }>('/api/me', { token }),
+  me: (token: string) => request<Me>('/api/me', { token }),
+
+  updateProfile: (token: string, body: ProfileUpdate) =>
+    request<Me>('/api/profile', { method: 'PUT', token, body: JSON.stringify(body) }),
+
+  dashboard: (token: string) => request<Dashboard>('/api/dashboard', { token }),
+
+  foodDay: (token: string, date?: string) =>
+    request<FoodDay>(`/api/nutrition/day${date ? `?date=${date}` : ''}`, { token }),
+
+  addFood: (token: string, body: { date?: string; meal: Meal; source?: 'MANUAL' | 'PHOTO'; items: FoodItem[] }) =>
+    request<FoodEntry[]>('/api/nutrition/entries', { method: 'POST', token, body: JSON.stringify(body) }),
+
+  deleteFood: (token: string, id: string) =>
+    request<void>(`/api/nutrition/entries/${id}`, { method: 'DELETE', token }),
+
+  analyzeFood: (token: string, imageBase64: string, lang: Lang, hint?: string) =>
+    request<Analysis>('/api/nutrition/analyze', {
+      method: 'POST',
+      token,
+      body: JSON.stringify({ imageBase64, mimeType: 'image/jpeg', lang, hint }),
+    }),
+
+  coachThread: (token: string) => request<CoachThread>('/api/coach/messages', { token }),
+
+  askCoach: (token: string, text: string, lang: Lang) =>
+    request<CoachMessage>('/api/coach/messages', { method: 'POST', token, body: JSON.stringify({ text, lang }) }),
+
+  clearCoach: (token: string) => request<void>('/api/coach/messages', { method: 'DELETE', token }),
 
   today: (token: string) => request<TodayLog>('/api/log/today', { token }),
 

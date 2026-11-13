@@ -72,7 +72,7 @@ class ApiFlowTest {
                 .andExpect(jsonPath("$.consentAt").exists());
 
         var columns = jdbc.queryForList(
-                "select lower(column_name) from information_schema.columns where lower(table_name) in ('users','set_logs')",
+                "select lower(column_name) from information_schema.columns where lower(table_schema) = 'public' and lower(table_name) in ('users','set_logs')",
                 String.class);
         assertThat(columns).noneMatch(c -> c.contains("name") || c.contains("email") || c.contains("phone"));
     }

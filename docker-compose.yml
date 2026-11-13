@@ -6,7 +6,7 @@ services:
       POSTGRES_USER: delta
       POSTGRES_PASSWORD: delta
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     volumes:
       - delta-db:/var/lib/postgresql/data
 
@@ -18,6 +18,8 @@ services:
       DB_URL: jdbc:postgresql://db:5432/delta
       DB_USER: delta
       DB_PASSWORD: delta
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
     ports:
       - "8080:8080"
 

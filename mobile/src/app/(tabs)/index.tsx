@@ -1,58 +1,29 @@
-import { useFocusEffect } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Button, Card, ErrorText } from '@/components/ui';
-import { api, ApiError, type LoggedSet, type PrefillRow } from '@/lib/api';
+import { BarChart, MacroBar, Ring, Sparkline } from '@/components/charts';
+import { Button, Card, ErrorText, IconButton, Loading, Screen, SectionTitle, type IconName } from '@/components/ui';
+import { api, type Dashboard } from '@/lib/api';
+import { errorText, useI18n } from '@/lib/i18n';
 import { useToken } from '@/lib/session';
-import { colors, radius, space } from '@/lib/theme';
+import { colors, radius, space, type } from '@/lib/theme';
 
-type Draft = { weight: string; reps: string };
-
-const toDraft = (r: PrefillRow): Draft => ({
-  weight: r.weightKg != null ? String(r.weightKg) : '',
-  reps: r.reps != null ? String(r.reps) : '',
-});
-
-const parseNum = (s: string) => {
-  const n = Number(s.replace(',', '.'));
-  return s.trim() === '' || Number.isNaN(n) ? null : n;
-};
-
-export default function LogScreen() {
+export default function HomeScreen() {
   const token = useToken();
-  const [rows, setRows] = useState<PrefillRow[]>([]);
-  const [drafts, setDrafts] = useState<Record<string, Draft>>({});
-  const [todaySets, setTodaySets] = useState<LoggedSet[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [savingExercise, setSavingExercise] = useState<string | null>(null);
+  const { t, ex, locale } = useI18n();
+  const [data, setData] = useState<Dashboard | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [newExercise, setNewExercise] = useState('');
 
   const load = useCallback(async () => {
     try {
-      const data = await api.today(token);
-      setRows(data.rows);
-      setDrafts(Object.fromEntries(data.rows.map((r) => [r.exercise, toDraft(r)])));
-      setTodaySets(data.todaySets);
+      setData(await api.dashboard(token));
       setError(null);
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Could not load your log.');
-    } finally {
-      setLoading(false);
+      setError(errorText(e, t));
     }
-  }, [token]);
+  }, [token, t]);
 
   useFocusEffect(
     useCallback(() => {
@@ -60,229 +31,257 @@ export default function LogScreen() {
     }, [load]),
   );
 
-  const setDraft = (exercise: string, patch: Partial<Draft>) =>
-    setDrafts((d) => ({ ...d, [exercise]: { ...d[exercise], ...patch } }));
+  if (!data && !error) return <Loading />;
 
-  const step = (exercise: string, field: keyof Draft, delta: number) => {
-    const current = parseNum(drafts[exercise]?.[field] ?? '') ?? 0;
-    const next = Math.max(0, Math.round((current + delta) * 100) / 100);
-    setDraft(exercise, { [field]: String(next) });
-  };
-
-  const save = async (exercise: string) => {
-    const d = drafts[exercise];
-    const weight = parseNum(d.weight);
-    const reps = parseNum(d.reps);
-    if (weight == null || reps == null) return;
-    setSavingExercise(exercise);
-    try {
-      await api.logSet(token, exercise, weight, reps);
-      await load();
-    } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Could not save the set.');
-    } finally {
-      setSavingExercise(null);
-    }
-  };
-
-  const remove = async (id: string) => {
-    try {
-      await api.deleteSet(token, id);
-      await load();
-    } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Could not delete the set.');
-    }
-  };
-
-  const addExercise = () => {
-    const name = newExercise.trim().replace(/\s+/g, ' ');
-    if (!name || rows.some((r) => r.exercise.toLowerCase() === name.toLowerCase())) return;
-    const row: PrefillRow = { exercise: name, hint: 'start light, 10–12 reps' };
-    setRows((r) => [...r, row]);
-    setDrafts((d) => ({ ...d, [name]: toDraft(row) }));
-    setNewExercise('');
-  };
-
-  if (loading) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator color={colors.navy} />
-      </View>
-    );
-  }
+  const dateLabel = new Date().toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' });
+  const dayLabels = (data?.days ?? []).map((d) =>
+    new Date(`${d.date}T12:00:00`).toLocaleDateString(locale, { weekday: 'short' }).replace('.', '').slice(0, 2),
+  );
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView
-        style={styles.screen}
-        contentContainerStyle={styles.content}
-        keyboardShouldPersistTaps="handled"
-        refreshControl={<RefreshControl refreshing={false} onRefresh={load} />}>
-        <ErrorText message={error} />
+    <Screen
+      subtitle={dateLabel}
+      title={t('home.hello')}
+      onRefresh={load}
+      right={<IconButton icon="person-outline" label={t('settings.title')} onPress={() => router.push('/settings')} />}>
+      <ErrorText message={error} />
 
-        {rows.map((r) => {
-          const d = drafts[r.exercise] ?? { weight: '', reps: '' };
-          const weight = parseNum(d.weight);
-          const reps = parseNum(d.reps);
-          const needsReps = weight != null && reps == null;
-          const isNew = r.hint != null;
-          return (
-            <Card key={r.exercise} style={{ marginBottom: space(3) }}>
-              <View style={styles.rowHeader}>
-                <Text style={styles.exercise}>{r.exercise}</Text>
-                {!isNew && <Text style={styles.lastTime}>last time {r.weightKg} × {r.reps}</Text>}
+      {data && (
+        <>
+          <CaloriesCard data={data} />
+
+          <View style={styles.statsRow}>
+            <Stat icon="barbell" value={`${data.workoutsThisWeek}/${data.plannedPerWeek}`} label={t('home.statWorkouts')}>
+              <View style={styles.dots}>
+                {Array.from({ length: data.plannedPerWeek }, (_, i) => (
+                  <View key={i} style={[styles.dot, i < data.workoutsThisWeek && { backgroundColor: colors.accent }]} />
+                ))}
               </View>
-              {isNew && <Text style={styles.hint}>New exercise: {r.hint}</Text>}
-
-              <View style={styles.inputs}>
-                <NumberField
-                  label="kg"
-                  value={d.weight}
-                  onChange={(v) => setDraft(r.exercise, { weight: v })}
-                  onMinus={() => step(r.exercise, 'weight', -2.5)}
-                  onPlus={() => step(r.exercise, 'weight', 2.5)}
-                  decimal
-                />
-                <Text style={styles.times}>×</Text>
-                <NumberField
-                  label="reps"
-                  value={d.reps}
-                  onChange={(v) => setDraft(r.exercise, { reps: v })}
-                  onMinus={() => step(r.exercise, 'reps', -1)}
-                  onPlus={() => step(r.exercise, 'reps', 1)}
-                />
-              </View>
-
-              {needsReps && <Text style={styles.flag}>Enter reps to save</Text>}
-
-              <Button
-                title="Save set"
-                onPress={() => save(r.exercise)}
-                disabled={weight == null || reps == null || reps < 1}
-                loading={savingExercise === r.exercise}
-              />
-            </Card>
-          );
-        })}
-
-        <Card style={{ marginBottom: space(6) }}>
-          <Text style={styles.sectionLabel}>Add an exercise</Text>
-          <View style={{ flexDirection: 'row', gap: space(2) }}>
-            <TextInput
-              style={[styles.input, { flex: 1, textAlign: 'left' }]}
-              placeholder="e.g. Lunge"
-              placeholderTextColor={colors.muted}
-              value={newExercise}
-              onChangeText={setNewExercise}
-              onSubmitEditing={addExercise}
-              maxLength={60}
+            </Stat>
+            <Stat
+              icon="flame"
+              iconColor={data.streakDays > 0 ? colors.fat : colors.faint}
+              value={String(data.streakDays)}
+              label={t('home.statStreak')}
             />
-            <Button title="Add" variant="secondary" onPress={addExercise} disabled={!newExercise.trim()} />
+            <Stat icon="layers" iconColor={colors.protein} value={String(data.setsToday)} label={t('home.statSets')} />
           </View>
-        </Card>
 
-        <Text style={styles.sectionLabel}>Today</Text>
-        {todaySets.length === 0 ? (
-          <Text style={styles.muted}>No sets yet today.</Text>
-        ) : (
-          todaySets.map((s) => (
-            <View key={s.id} style={styles.loggedRow}>
-              <Text style={styles.loggedText}>
-                {s.exercise} · {s.weightKg} kg × {s.reps}
-              </Text>
-              <Pressable accessibilityRole="button" onPress={() => remove(s.id)} hitSlop={12}>
-                <Text style={styles.undo}>Undo</Text>
-              </Pressable>
-            </View>
-          ))
-        )}
-      </ScrollView>
-    </KeyboardAvoidingView>
+          <View style={styles.actions}>
+            <Action
+              icon="camera"
+              title={t('home.snap')}
+              sub={t('home.snapSub')}
+              accent
+              onPress={() => router.push({ pathname: '/food', params: { scan: '1' } })}
+            />
+            <Action icon="sparkles" title={t('home.ask')} sub={t('home.askSub')} onPress={() => router.push('/coach')} />
+          </View>
+
+          <SectionTitle>{t('home.calories7')}</SectionTitle>
+          <Card>
+            <BarChart
+              values={data.days.map((d) => d.kcal)}
+              labels={dayLabels}
+              target={data.targets?.kcal}
+              color={colors.accent}
+            />
+          </Card>
+
+          <SectionTitle>{t('home.volume7')}</SectionTitle>
+          <Card>
+            <BarChart
+              values={data.days.map((d) => d.volumeKg)}
+              labels={dayLabels}
+              color={colors.protein}
+              format={(n) => (n >= 1000 ? `${(n / 1000).toFixed(1)}${t('common.t')}` : String(n))}
+            />
+          </Card>
+
+          <SectionTitle>{t('home.lifts')}</SectionTitle>
+          <Card style={{ gap: space(4) }}>
+            {data.lifts.length === 0 ? (
+              <Text style={type.small}>{t('home.noLifts')}</Text>
+            ) : (
+              <>
+                <Text style={type.small}>{t('home.liftsHint')}</Text>
+                {data.lifts.map((l) => {
+                  const pts = l.e1rmByWeek.filter((v): v is number => v != null);
+                  const change = pts.length > 1 ? pts[pts.length - 1] - pts[0] : 0;
+                  return (
+                    <View key={l.exercise} style={styles.liftRow}>
+                      <View style={{ flex: 1 }}>
+                        <Text style={type.h3}>{ex(l.exercise)}</Text>
+                        <Text style={[type.small, type.num]}>
+                          {l.weightKg} {t('common.kg')} × {l.reps}
+                        </Text>
+                      </View>
+                      <Sparkline values={l.e1rmByWeek} />
+                      <View style={{ width: 68, alignItems: 'flex-end' }}>
+                        <Text style={[type.h3, type.num]}>{Math.round(pts[pts.length - 1] ?? 0)}</Text>
+                        {change !== 0 && (
+                          <Text style={[styles.delta, { color: change > 0 ? colors.up : colors.down }]}>
+                            {change > 0 ? '+' : ''}
+                            {change.toFixed(1)}
+                          </Text>
+                        )}
+                      </View>
+                    </View>
+                  );
+                })}
+              </>
+            )}
+          </Card>
+        </>
+      )}
+    </Screen>
   );
 }
 
-function NumberField(props: {
-  label: string;
+function CaloriesCard({ data }: { data: Dashboard }) {
+  const { t } = useI18n();
+  const target = data.targets;
+  const left = target ? target.kcal - data.kcalToday : 0;
+  return (
+    <Card style={{ padding: space(5) }}>
+      <View style={styles.calRow}>
+        <Ring value={data.kcalToday} max={target?.kcal ?? 0} size={150} stroke={13}>
+          <Text style={[type.display, { fontSize: 32 }]}>{data.kcalToday}</Text>
+          <Text style={type.small}>{t('home.eaten')}</Text>
+        </Ring>
+        <View style={{ flex: 1, gap: space(1) }}>
+          {target ? (
+            <>
+              <Text style={type.caption}>{left >= 0 ? t('home.left') : t('home.over')}</Text>
+              <Text style={[type.display, { fontSize: 34, color: left >= 0 ? colors.text : colors.down }]}>
+                {Math.abs(left)}
+              </Text>
+              <Text style={type.small}>
+                {t('common.kcal')} · {t('home.target')} {target.kcal}
+              </Text>
+            </>
+          ) : (
+            <>
+              <Text style={type.small}>{t('home.noTargets')}</Text>
+              <Button
+                title={t('home.fillProfile')}
+                size="md"
+                variant="secondary"
+                onPress={() => router.push('/settings')}
+                style={{ marginTop: space(2) }}
+              />
+            </>
+          )}
+        </View>
+      </View>
+      <View style={{ gap: space(3), marginTop: space(5) }}>
+        <MacroBar
+          label={t('macro.protein')}
+          value={data.proteinToday}
+          target={target?.proteinG}
+          color={colors.protein}
+          unit={t('common.g')}
+        />
+        <MacroBar
+          label={t('macro.fat')}
+          value={data.fatToday}
+          target={target?.fatG}
+          color={colors.fat}
+          unit={t('common.g')}
+        />
+        <MacroBar
+          label={t('macro.carbs')}
+          value={data.carbsToday}
+          target={target?.carbsG}
+          color={colors.carbs}
+          unit={t('common.g')}
+        />
+      </View>
+    </Card>
+  );
+}
+
+function Stat({
+  icon,
+  iconColor = colors.accent,
+  value,
+  label,
+  children,
+}: {
+  icon: IconName;
+  iconColor?: string;
   value: string;
-  onChange: (v: string) => void;
-  onMinus: () => void;
-  onPlus: () => void;
-  decimal?: boolean;
+  label: string;
+  children?: React.ReactNode;
 }) {
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.stepper}>
-        <Pressable accessibilityLabel={`less ${props.label}`} onPress={props.onMinus} style={styles.stepBtn}>
-          <Text style={styles.stepText}>−</Text>
-        </Pressable>
-        <TextInput
-          style={styles.input}
-          value={props.value}
-          onChangeText={props.onChange}
-          keyboardType={props.decimal ? 'decimal-pad' : 'number-pad'}
-          placeholder="–"
-          placeholderTextColor={colors.muted}
-          selectTextOnFocus
-        />
-        <Pressable accessibilityLabel={`more ${props.label}`} onPress={props.onPlus} style={styles.stepBtn}>
-          <Text style={styles.stepText}>+</Text>
-        </Pressable>
+    <Card style={styles.stat}>
+      <Ionicons name={icon} size={18} color={iconColor} />
+      <Text style={[type.display, { fontSize: 28, marginTop: space(2) }]}>{value}</Text>
+      {children}
+      <Text style={[type.small, { fontSize: 12, lineHeight: 15, marginTop: space(1) }]} numberOfLines={2}>
+        {label}
+      </Text>
+    </Card>
+  );
+}
+
+function Action({
+  icon,
+  title,
+  sub,
+  onPress,
+  accent,
+}: {
+  icon: IconName;
+  title: string;
+  sub: string;
+  onPress: () => void;
+  accent?: boolean;
+}) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.action,
+        accent && { backgroundColor: colors.accent, borderColor: colors.accent },
+        pressed && { opacity: 0.85 },
+      ]}>
+      <View style={[styles.actionIcon, accent && { backgroundColor: 'rgba(10,12,15,0.12)' }]}>
+        <Ionicons name={icon} size={20} color={accent ? colors.accentInk : colors.accent} />
       </View>
-      <Text style={styles.unit}>{props.label}</Text>
-    </View>
+      <Text style={[type.h3, { fontSize: 16 }, accent && { color: colors.accentInk }]}>{title}</Text>
+      <Text style={[type.small, { fontSize: 13 }, accent && { color: 'rgba(10,12,15,0.7)' }]}>{sub}</Text>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.bg },
-  content: { padding: space(4), paddingBottom: space(12) },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bg },
-  rowHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' },
-  exercise: { fontSize: 18, fontWeight: '700', color: colors.text },
-  lastTime: { fontSize: 13, color: colors.muted },
-  hint: { fontSize: 14, color: colors.muted, marginTop: space(1) },
-  inputs: { flexDirection: 'row', alignItems: 'flex-start', gap: space(2), marginVertical: space(3) },
-  times: { fontSize: 20, color: colors.muted, marginTop: space(3) },
-  stepper: { flexDirection: 'row', alignItems: 'center', gap: space(1) },
-  stepBtn: {
-    width: 40,
-    height: 48,
-    borderRadius: radius,
-    backgroundColor: colors.bg,
+  calRow: { flexDirection: 'row', alignItems: 'center', gap: space(5) },
+  statsRow: { flexDirection: 'row', gap: space(3) },
+  stat: { flex: 1, padding: space(3.5) },
+  dots: { flexDirection: 'row', gap: 4, marginTop: space(1.5) },
+  dot: { flex: 1, height: 5, borderRadius: 3, backgroundColor: colors.surface3 },
+  actions: { flexDirection: 'row', gap: space(3) },
+  action: {
+    flex: 1,
+    backgroundColor: colors.surface,
+    borderRadius: radius.lg,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
+    padding: space(4),
+    gap: space(1),
+  },
+  actionIcon: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: colors.accentSoft,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: space(2),
   },
-  stepText: { fontSize: 22, fontWeight: '700', color: colors.navy },
-  input: {
-    flex: 1,
-    height: 48,
-    borderRadius: radius,
-    borderWidth: 1,
-    borderColor: colors.border,
-    fontSize: 20,
-    fontWeight: '700',
-    textAlign: 'center',
-    color: colors.text,
-    paddingHorizontal: space(2),
-  },
-  unit: { textAlign: 'center', fontSize: 12, color: colors.muted, marginTop: space(1) },
-  flag: {
-    color: colors.warn,
-    backgroundColor: colors.warnBg,
-    padding: space(2),
-    borderRadius: 8,
-    marginBottom: space(3),
-    fontWeight: '600',
-  },
-  sectionLabel: { fontSize: 15, fontWeight: '700', color: colors.text, marginBottom: space(2) },
-  muted: { color: colors.muted, fontSize: 15 },
-  loggedRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: space(3),
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: colors.border,
-  },
-  loggedText: { fontSize: 16, color: colors.text },
-  undo: { fontSize: 15, color: colors.navy, fontWeight: '600' },
+  liftRow: { flexDirection: 'row', alignItems: 'center', gap: space(3) },
+  delta: { fontSize: 12, fontWeight: '700', fontVariant: ['tabular-nums'] },
 });

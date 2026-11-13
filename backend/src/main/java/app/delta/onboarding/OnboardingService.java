@@ -42,6 +42,10 @@ public class OnboardingService {
         String token = Tokens.newToken();
         AppUser user = new AppUser(UUID.randomUUID(), Tokens.hash(token), Instant.now(clock),
                 req.goal(), req.daysPerWeek(), req.minutesPerSession());
+        if (req.body() != null) {
+            var b = req.body();
+            user.updateBody(b.sex(), b.birthYear(), b.heightCm(), b.weightKg(), null);
+        }
         users.save(user);
         return OnboardingResponse.admitted(user.getId(), token);
     }

@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -36,6 +37,21 @@ public class AppUser {
     @Column(name = "minutes_per_session", nullable = false)
     private int minutesPerSession;
 
+    @Column(length = 8)
+    private String sex;
+
+    @Column(name = "birth_year")
+    private Integer birthYear;
+
+    @Column(name = "height_cm")
+    private Integer heightCm;
+
+    @Column(name = "weight_kg", precision = 5, scale = 1)
+    private BigDecimal weightKg;
+
+    @Column(name = "calorie_target")
+    private Integer calorieTarget;
+
     protected AppUser() {}
 
     public AppUser(UUID id, String tokenHash, Instant now, Goal goal, int daysPerWeek, int minutesPerSession) {
@@ -55,4 +71,23 @@ public class AppUser {
     public Goal getGoal() { return goal; }
     public int getDaysPerWeek() { return daysPerWeek; }
     public int getMinutesPerSession() { return minutesPerSession; }
+    public String getSex() { return sex; }
+    public Integer getBirthYear() { return birthYear; }
+    public Integer getHeightCm() { return heightCm; }
+    public BigDecimal getWeightKg() { return weightKg; }
+    public Integer getCalorieTarget() { return calorieTarget; }
+
+    public void updatePlan(Goal goal, int daysPerWeek, int minutesPerSession) {
+        this.goal = goal;
+        this.daysPerWeek = daysPerWeek;
+        this.minutesPerSession = minutesPerSession;
+    }
+
+    public void updateBody(String sex, Integer birthYear, Integer heightCm, BigDecimal weightKg, Integer calorieTarget) {
+        this.sex = sex;
+        this.birthYear = birthYear;
+        this.heightCm = heightCm;
+        this.weightKg = weightKg;
+        this.calorieTarget = calorieTarget;
+    }
 }
