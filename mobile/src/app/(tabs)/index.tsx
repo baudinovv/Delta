@@ -93,6 +93,24 @@ export default function HomeScreen() {
             <Stat icon="layers" iconColor={colors.protein} value={<CountUp value={data.setsToday} />} label={t('home.statSets')} />
           </View>
 
+          {data.stepsToday != null && (
+            <PressScale accessibilityRole="button" onPress={() => router.push('/health')} scaleTo={0.98} hapticKind="tap">
+              <Card style={styles.steps}>
+                <Ionicons name="footsteps" size={20} color={colors.accent} />
+                <Text style={[type.h2, type.num]}>
+                  <CountUp value={data.stepsToday} />
+                </Text>
+                <Text style={[type.small, { flex: 1 }]}>{t('hl.stepsToday')}</Text>
+                {data.activeKcalToday != null && (
+                  <Text style={[type.small, type.num]}>
+                    <Text style={{ color: colors.fat, fontWeight: '700' }}>{data.activeKcalToday}</Text> {t('hl.activeToday')}
+                  </Text>
+                )}
+                <Ionicons name="chevron-forward" size={16} color={colors.faint} />
+              </Card>
+            </PressScale>
+          )}
+
           <View style={styles.actions}>
             <Action
               icon="camera"
@@ -301,6 +319,7 @@ const styles = StyleSheet.create({
   dots: { flexDirection: 'row', gap: 4, marginTop: space(1.5) },
   dot: { flex: 1, height: 5, borderRadius: 3, backgroundColor: colors.surface3 },
   actions: { flexDirection: 'row', gap: space(3) },
+  steps: { flexDirection: 'row', alignItems: 'center', gap: space(2.5), paddingVertical: space(3) },
   action: {
     flex: 1,
     backgroundColor: colors.surface,

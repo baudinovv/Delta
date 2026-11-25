@@ -40,6 +40,21 @@ npx expo start
 
 **Browser:** press `w` in the Expo terminal or run `npx expo start --web`. Good for checking design and flows; the camera button opens a file picker there.
 
+### Apple Health / Health Connect
+
+Health sync uses native modules, so it **does not work in Expo Go** (the Health screen says so; everything else still works). Build the app once with [EAS](https://expo.dev/eas) and install it on the phone; after that it loads JS from `npx expo start` like Expo Go does.
+
+```bash
+cd mobile
+npx eas-cli login                                       # free expo.dev account
+npx eas-cli build --profile development --platform android   # APK, install it on the phone
+npx expo start --dev-client
+```
+
+- **Android:** Health Connect is built into Android 14+. On Android 9–13 install "Health Connect" from Google Play first (the app shows a button for it). Delta reads steps, active calories, heart rate and workouts (e.g. from Galaxy Watch / Wear OS via their apps) and writes logged strength sessions as workouts.
+- **iOS:** same command with `--platform ios`. Needs a paid Apple Developer account (HealthKit entitlement + device provisioning). Not testable without it.
+- Data is uploaded only after the user agrees on the Health screen; turning sync off deletes everything synced on the server. Finished Delta sessions are written to Health automatically; today's session only on "Save today's workout".
+
 Troubleshooting:
 - phone can't reach Metro: open port 8081 in the firewall (`sudo ufw allow 8081/tcp` on Ubuntu)
 - Wi-Fi isolates clients (university/guest networks): use a phone hotspot, or `npx expo start --tunnel` (the API still has to be reachable from the phone)
@@ -77,6 +92,12 @@ Troubleshooting:
 | GET | `/api/coach/messages` | AI coach chat history |
 | POST | `/api/coach/messages` | ask the coach; it sees the profile, last 14 days of sets and today's food |
 | DELETE | `/api/coach/messages` | clear the chat |
+| GET | `/api/health/status` | health sync consent, last sync, number of stored samples |
+| PUT | `/api/health/consent` | `{consent: true\|false}`; false also deletes all synced health data |
+| POST | `/api/health/sync` | upload samples from Apple Health / Health Connect (`IOS`/`ANDROID`): workouts and daily steps / active energy / heart rate; upsert by platform record id |
+| GET | `/api/health/summary?days=7` | per-day steps, active kcal, heart rate; workouts from other apps; today's totals |
+| GET | `/api/health/sessions?days=14` | Delta strength sessions (a day of sets) for writing back to Health |
+| DELETE | `/api/health/data` | delete synced health data, keep consent |
 
 Everything except register/login needs `Authorization: Bearer <token>`. Passwords are stored as BCrypt hashes, session tokens as SHA-256 (one row per device in `sessions`).
 

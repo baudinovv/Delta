@@ -4,6 +4,7 @@ import app.delta.ai.AiClient;
 import app.delta.ai.AiClient.Turn;
 import app.delta.common.ApiException;
 import app.delta.config.DeltaProperties;
+import app.delta.health.HealthService;
 import app.delta.log.SetLog;
 import app.delta.log.SetLogRepository;
 import app.delta.nutrition.NutritionService;
@@ -45,18 +46,20 @@ public class CoachService {
     private final SetLogRepository sets;
     private final NutritionService nutrition;
     private final TargetService targets;
+    private final HealthService health;
     private final AiClient ai;
     private final DeltaProperties props;
     private final Clock clock;
 
     public CoachService(CoachMessageRepository messages, UserRepository users, SetLogRepository sets,
-                        NutritionService nutrition, TargetService targets, AiClient ai, DeltaProperties props,
-                        Clock clock) {
+                        NutritionService nutrition, TargetService targets, HealthService health, AiClient ai,
+                        DeltaProperties props, Clock clock) {
         this.messages = messages;
         this.users = users;
         this.sets = sets;
         this.nutrition = nutrition;
         this.targets = targets;
+        this.health = health;
         this.ai = ai;
         this.props = props;
         this.clock = clock;
@@ -142,6 +145,17 @@ public class CoachService {
             byExercise.forEach((ex, list) -> s.append("- ").append(ex).append(": ")
                     .append(String.join(", ", list.subList(Math.max(0, list.size() - 12), list.size())))
                     .append('\n'));
+        }
+        if (u.getHealthConsentAt() != null) {
+            var h = health.summary(u.getId(), 7);
+            if (h.avgSteps() != null) s.append("Average steps (7 days, from phone/watch): ").append(h.avgSteps()).append('\n');
+            if (h.avgActiveKcal() != null) {
+                s.append("Average active energy: ").append(h.avgActiveKcal()).append(" kcal/day\n");
+            }
+            h.workouts().stream().limit(5).forEach(w -> s.append("- Watch workout ").append(w.date()).append(": ")
+                    .append(w.type()).append(", ").append(w.minutes()).append(" min")
+                    .append(w.energyKcal() != null ? ", " + w.energyKcal() + " kcal" : "")
+                    .append(w.avgHr() != null ? ", avg HR " + w.avgHr() : "").append('\n'));
         }
         var food = nutrition.day(u.getId(), today);
         s.append("Eaten today: ").append(food.totals().kcal()).append(" kcal, P ").append(food.totals().proteinG())

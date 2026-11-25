@@ -18,6 +18,7 @@ export default function ProfileScreen() {
   const { me, reload } = useMe();
   const { t, lang, locale } = useI18n();
   const [streak, setStreak] = useState<number | null>(null);
+  const [healthOn, setHealthOn] = useState<boolean | null>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -25,6 +26,10 @@ export default function ProfileScreen() {
       api
         .dashboard(token)
         .then((d) => setStreak(d.streakDays))
+        .catch(() => undefined);
+      api
+        .healthStatus(token)
+        .then((h) => setHealthOn(h.consent))
         .catch(() => undefined);
     }, [reload, token]),
   );
@@ -74,6 +79,13 @@ export default function ProfileScreen() {
           title={t('profile.progress')}
           value={t('profile.progressSub')}
           onPress={() => router.push('/progress')}
+        />
+        <ListRow
+          icon="heart"
+          iconColor="#FF5A6E"
+          title={t('hl.title')}
+          value={healthOn == null ? undefined : healthOn ? t('hl.connected') : t('hl.notConnected')}
+          onPress={() => router.push('/health')}
           last
         />
       </ListGroup>

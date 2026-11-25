@@ -1,7 +1,9 @@
 import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { ActivityIndicator, View } from 'react-native';
+import { useEffect } from 'react';
+import { ActivityIndicator, AppState, View } from 'react-native';
 
+import { autoSync } from '@/lib/health/sync';
 import { I18nProvider, useI18n } from '@/lib/i18n';
 import { MeProvider } from '@/lib/me';
 import { SessionProvider, useSession } from '@/lib/session';
@@ -25,6 +27,20 @@ const pushed = {
   headerBackButtonDisplayMode: 'minimal' as const,
   animation: 'ios_from_right' as const,
 };
+
+/** Quietly syncs Apple Health / Health Connect when the app opens or comes back to the foreground. */
+function HealthAutoSync({ token }: { token: string }) {
+  const { ex } = useI18n();
+  useEffect(() => {
+    const titleFor = (exercises: string[]) => `Delta · ${exercises.map(ex).join(', ')}`.slice(0, 80);
+    autoSync(token, titleFor);
+    const sub = AppState.addEventListener('change', (state) => {
+      if (state === 'active') autoSync(token, titleFor);
+    });
+    return () => sub.remove();
+  }, [token, ex]);
+  return null;
+}
 
 function RootStack() {
   const { token, ready } = useSession();
@@ -53,6 +69,7 @@ function RootStack() {
         <Stack.Screen name="profile/goals" options={{ ...pushed, title: t('profile.goals') }} />
         <Stack.Screen name="profile/language" options={{ ...pushed, title: t('profile.language') }} />
         <Stack.Screen name="profile/account" options={{ ...pushed, title: t('profile.account') }} />
+        <Stack.Screen name="health" options={{ ...pushed, title: t('hl.title') }} />
         <Stack.Screen name="food/add" options={{ ...pushed, title: t('food.add') }} />
         <Stack.Screen name="food/item" options={{ ...pushed, title: '' }} />
         <Stack.Screen name="food/scan" options={{ animation: 'slide_from_bottom' }} />
@@ -63,7 +80,14 @@ function RootStack() {
     </Stack>
   );
 
-  return token ? <MeProvider>{stack}</MeProvider> : stack;
+  return token ? (
+    <MeProvider>
+      <HealthAutoSync token={token} />
+      {stack}
+    </MeProvider>
+  ) : (
+    stack
+  );
 }
 
 export default function RootLayout() {

@@ -172,6 +172,33 @@ export type Dashboard = {
   streakDays: number;
   days: DashboardDay[];
   lifts: Lift[];
+  /** From Apple Health / Health Connect, when connected. */
+  stepsToday?: number | null;
+  activeKcalToday?: number | null;
+};
+
+export type HealthStatus = { consent: boolean; consentAt?: string | null; syncedAt?: string | null; samples: number };
+export type HealthDay = { date: string; steps?: number | null; activeKcal?: number | null; avgHr?: number | null; workouts: number };
+export type HealthWorkout = {
+  date: string;
+  start: string;
+  end: string;
+  type?: string;
+  minutes: number;
+  energyKcal?: number;
+  avgHr?: number;
+  source?: string;
+  platform: 'IOS' | 'ANDROID';
+};
+export type HealthSummary = {
+  consent: boolean;
+  syncedAt?: string | null;
+  days: HealthDay[];
+  workouts: HealthWorkout[];
+  avgSteps?: number | null;
+  avgActiveKcal?: number | null;
+  stepsToday?: number | null;
+  activeKcalToday?: number | null;
 };
 
 export type Lang = 'ru' | 'en';
@@ -273,6 +300,28 @@ export const api = {
       token,
       body: JSON.stringify({ date, deltaMl }),
     }),
+
+  healthStatus: (token: string) => request<HealthStatus>('/api/health/status', { token }),
+
+  healthConsent: (token: string, consent: boolean) =>
+    request<HealthStatus>('/api/health/consent', { method: 'PUT', token, body: JSON.stringify({ consent }) }),
+
+  healthSync: (token: string, platform: 'IOS' | 'ANDROID', samples: unknown[]) =>
+    request<{ inserted: number; updated: number; syncedAt: string }>('/api/health/sync', {
+      method: 'POST',
+      token,
+      body: JSON.stringify({ platform, samples }),
+    }),
+
+  healthSummary: (token: string, days = 7) => request<HealthSummary>(`/api/health/summary?days=${days}`, { token }),
+
+  healthSessions: (token: string, days = 14) =>
+    request<{ date: string; start: string; end: string; sets: number; volumeKg: number; exercises: string[] }[]>(
+      `/api/health/sessions?days=${days}`,
+      { token },
+    ),
+
+  healthDeleteData: (token: string) => request<void>('/api/health/data', { method: 'DELETE', token }),
 
   report: (token: string, days: 7 | 14 | 30) => request<Report>(`/api/nutrition/report?days=${days}`, { token }),
 

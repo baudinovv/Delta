@@ -58,6 +58,12 @@ public class AppUser {
     @Column(name = "calorie_target")
     private Integer calorieTarget;
 
+    @Column(name = "health_consent_at")
+    private Instant healthConsentAt;
+
+    @Column(name = "health_synced_at")
+    private Instant healthSyncedAt;
+
     protected AppUser() {}
 
     public AppUser(UUID id, String email, String passwordHash, String name, Instant now,
@@ -79,6 +85,10 @@ public class AppUser {
     public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }
+    public Instant getHealthConsentAt() { return healthConsentAt; }
+    public Instant getHealthSyncedAt() { return healthSyncedAt; }
+    public void setHealthConsentAt(Instant at) { this.healthConsentAt = at; }
+    public void setHealthSyncedAt(Instant at) { this.healthSyncedAt = at; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
     public Instant getCreatedAt() { return createdAt; }
     public Instant getConsentAt() { return consentAt; }

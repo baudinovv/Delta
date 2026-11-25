@@ -3,6 +3,7 @@ package app.delta.dashboard;
 import app.delta.common.ApiException;
 import app.delta.common.AuthInterceptor;
 import app.delta.config.DeltaProperties;
+import app.delta.health.HealthService;
 import app.delta.log.SetLog;
 import app.delta.log.SetLogRepository;
 import app.delta.nutrition.FoodEntry;
@@ -42,22 +43,26 @@ public class DashboardController {
 
     public record Dashboard(LocalDate date, NutritionTargets targets, int kcalToday, int proteinToday,
                             int fatToday, int carbsToday, int setsToday, int workoutsThisWeek, int plannedPerWeek,
-                            int streakDays, List<Day> days, List<Lift> lifts) {}
+                            int streakDays, List<Day> days, List<Lift> lifts, Integer stepsToday,
+                            Integer activeKcalToday) {}
 
     private final UserRepository users;
     private final SetLogRepository sets;
     private final FoodEntryRepository food;
     private final NutritionService nutrition;
     private final TargetService targets;
+    private final HealthService health;
     private final DeltaProperties props;
 
     public DashboardController(UserRepository users, SetLogRepository sets, FoodEntryRepository food,
-                               NutritionService nutrition, TargetService targets, DeltaProperties props) {
+                               NutritionService nutrition, TargetService targets, HealthService health,
+                               DeltaProperties props) {
         this.users = users;
         this.sets = sets;
         this.food = food;
         this.nutrition = nutrition;
         this.targets = targets;
+        this.health = health;
         this.props = props;
     }
 
@@ -112,9 +117,11 @@ public class DashboardController {
         }
 
         int[] todayV = perDay.getOrDefault(today, new int[3]);
+        Map<String, Integer> healthToday = user.getHealthConsentAt() == null ? Map.of() : health.today(userId);
         return new Dashboard(today, targets.forUser(user), todayV[0], (int) Math.round(p), (int) Math.round(f),
                 (int) Math.round(c), todayV[1], workoutsThisWeek,
-                user.getDaysPerWeek(), streak, days, lifts(setList, liftsFrom));
+                user.getDaysPerWeek(), streak, days, lifts(setList, liftsFrom), healthToday.get("steps"),
+                healthToday.get("activeKcal"));
     }
 
     /** Top 3 exercises by number of sets, with best estimated 1RM per week (Epley). */

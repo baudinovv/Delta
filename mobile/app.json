@@ -8,7 +8,13 @@
     "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "app.delta.pilot"
+      "bundleIdentifier": "app.delta.pilot",
+      "infoPlist": {
+        "CFBundleLocalizations": [
+          "en",
+          "ru"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +24,14 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "app.delta.pilot"
+      "package": "app.delta.pilot",
+      "permissions": [
+        "android.permission.health.READ_STEPS",
+        "android.permission.health.READ_EXERCISE",
+        "android.permission.health.WRITE_EXERCISE",
+        "android.permission.health.READ_HEART_RATE",
+        "android.permission.health.READ_ACTIVE_CALORIES_BURNED"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -39,6 +52,23 @@
         {
           "cameraPermission": "Delta uses the camera to scan barcodes and photograph meals.",
           "recordAudioAndroid": false
+        }
+      ],
+      [
+        "@kingstinct/react-native-healthkit",
+        {
+          "NSHealthShareUsageDescription": "Delta reads your workouts, steps and active energy to show your full training load and give better coaching advice.",
+          "NSHealthUpdateUsageDescription": "Delta saves your logged strength sessions to Apple Health as workouts.",
+          "background": false
+        }
+      ],
+      "react-native-health-connect",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 26
+          }
         }
       ]
     ],
