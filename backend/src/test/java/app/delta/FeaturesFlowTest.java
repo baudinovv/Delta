@@ -33,9 +33,10 @@ class FeaturesFlowTest {
                 {"adult": true,
                  "screening": {"heartCondition": false, "chestPain": false, "dizziness": false,
                                "injury": false, "pregnant": false},
-                 "consent": true, "goal": "BUILD_MUSCLE", "daysPerWeek": 4, "minutesPerSession": 60%s}
-                """.formatted(body == null ? "" : ", \"body\": " + body);
-        String res = mvc.perform(post("/api/onboarding").contentType(MediaType.APPLICATION_JSON).content(onboarding))
+                 "consent": true, "goal": "BUILD_MUSCLE", "daysPerWeek": 4, "minutesPerSession": 60,
+                 "account": {"name": "Ann", "email": "%s@example.com", "password": "secret-pass-1"}%s}
+                """.formatted(java.util.UUID.randomUUID(), body == null ? "" : ", \"body\": " + body);
+        String res = mvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON).content(onboarding))
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
         return "Bearer " + json.readTree(res).get("token").asText();
     }

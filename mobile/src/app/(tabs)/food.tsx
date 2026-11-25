@@ -3,8 +3,11 @@ import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import Animated, { FadeIn, FadeInDown, FadeOutLeft } from 'react-native-reanimated';
+
 import { MacroBar, Ring } from '@/components/charts';
 import { ManualSheet, MEALS, ScanSheet } from '@/components/food-sheets';
+import { CountUp, haptic, listLayout, PressScale } from '@/components/motion';
 import { Button, Card, ErrorText, IconButton, Loading, Screen } from '@/components/ui';
 import { api, type FoodDay, type FoodEntry, type Meal } from '@/lib/api';
 import { errorText, useI18n } from '@/lib/i18n';
@@ -64,12 +67,29 @@ export default function FoodScreen() {
     }
   }, [params.scan, snap]);
 
+  /** Optimistic: the row slides out right away, the server catches up; on failure we reload. */
   const remove = async (id: string) => {
+    haptic('tap');
+    setDay((d) => {
+      if (!d) return d;
+      const gone = d.entries.find((x) => x.id === id);
+      if (!gone) return d;
+      return {
+        ...d,
+        entries: d.entries.filter((x) => x.id !== id),
+        totals: {
+          kcal: d.totals.kcal - gone.kcal,
+          proteinG: d.totals.proteinG - (gone.proteinG ?? 0),
+          fatG: d.totals.fatG - (gone.fatG ?? 0),
+          carbsG: d.totals.carbsG - (gone.carbsG ?? 0),
+        },
+      };
+    });
     try {
       await api.deleteFood(token, id);
-      await load();
     } catch (e) {
       setError(errorText(e, t));
+      load();
     }
   };
 
@@ -107,7 +127,9 @@ export default function FoodScreen() {
 
         <Card style={styles.summary}>
           <Ring value={totals.kcal} max={target?.kcal ?? 0} size={112} stroke={10}>
-            <Text style={[type.display, { fontSize: 24 }]}>{totals.kcal}</Text>
+            <Text style={[type.display, { fontSize: 24 }]}>
+              <CountUp value={totals.kcal} />
+            </Text>
             <Text style={[type.small, { fontSize: 12 }]}>
               {target ? `/ ${target.kcal}` : t('common.kcal')}
             </Text>
@@ -130,23 +152,31 @@ export default function FoodScreen() {
             </View>
           </View>
           <View style={{ flexDirection: 'row', gap: space(2) }}>
-            <Pressable style={styles.snapBtn} onPress={() => snap('camera')} accessibilityRole="button">
+            <PressScale
+              style={styles.snapBtn}
+              onPress={() => snap('camera')}
+              accessibilityRole="button"
+              hapticKind="tap"
+              scaleTo={0.94}>
               <Ionicons name="camera" size={18} color={colors.accent} />
               <Text style={styles.snapBtnText}>{t('food.camera')}</Text>
-            </Pressable>
-            <Pressable style={styles.snapBtn} onPress={() => snap('gallery')} accessibilityRole="button">
+            </PressScale>
+            <PressScale
+              style={styles.snapBtn}
+              onPress={() => snap('gallery')}
+              accessibilityRole="button"
+              hapticKind="tap"
+              scaleTo={0.94}>
               <Ionicons name="images" size={18} color={colors.accent} />
               <Text style={styles.snapBtnText}>{t('food.gallery')}</Text>
-            </Pressable>
+            </PressScale>
           </View>
         </View>
 
         <Button title={t('food.manual')} icon="add" variant="secondary" size="md" onPress={() => setManual(true)} />
 
         {!day ? (
-          <View style={{ height: 120 }}>
-            <Loading />
-          </View>
+          <Loading compact />
         ) : (
           MEALS.map((meal) => (
             <MealSection
@@ -193,19 +223,27 @@ function MealSection({
   const { t } = useI18n();
   const kcal = entries.reduce((s, e) => s + e.kcal, 0);
   return (
+    <Animated.View layout={listLayout}>
     <Card style={{ paddingVertical: space(3) }}>
       <View style={styles.mealHead}>
         <Ionicons name={MEAL_ICON[meal]} size={18} color={colors.muted} />
         <Text style={[type.h3, { flex: 1 }]}>{t(`food.meal.${meal}`)}</Text>
         <Text style={[type.h3, type.num, { color: kcal ? colors.text : colors.faint }]}>
-          {kcal} <Text style={type.small}>{t('common.kcal')}</Text>
+          <CountUp value={kcal} /> <Text style={type.small}>{t('common.kcal')}</Text>
         </Text>
       </View>
       {entries.length === 0 ? (
-        <Text style={[type.small, { color: colors.faint, marginTop: space(1) }]}>{t('food.empty')}</Text>
+        <Animated.Text entering={FadeIn} style={[type.small, { color: colors.faint, marginTop: space(1) }]}>
+          {t('food.empty')}
+        </Animated.Text>
       ) : (
         entries.map((e) => (
-          <View key={e.id} style={styles.entry}>
+          <Animated.View
+            key={e.id}
+            entering={FadeInDown.duration(300)}
+            exiting={FadeOutLeft.duration(220)}
+            layout={listLayout}
+            style={styles.entry}>
             <View style={{ flex: 1 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: space(1.5) }}>
                 {e.source === 'PHOTO' && <Ionicons name="camera" size={12} color={colors.accent} />}
@@ -227,10 +265,11 @@ function MealSection({
               onPress={() => onDelete(e.id)}>
               <Ionicons name="close-circle" size={20} color={colors.faint} />
             </Pressable>
-          </View>
+          </Animated.View>
         ))
       )}
     </Card>
+    </Animated.View>
   );
 }
 

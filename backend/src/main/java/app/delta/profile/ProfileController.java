@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,11 +35,13 @@ public class ProfileController {
         this.targets = targets;
     }
 
-    public record Me(UUID userId, Goal goal, int daysPerWeek, int minutesPerSession, Instant consentAt,
+    public record Me(UUID userId, String name, String email, Instant createdAt,
+                     Goal goal, int daysPerWeek, int minutesPerSession, Instant consentAt,
                      String sex, Integer birthYear, Integer heightCm, BigDecimal weightKg, Integer calorieTarget,
                      NutritionTargets targets) {}
 
     public record UpdateProfile(
+            @Size(min = 1, max = 40) String name,
             @NotNull Goal goal,
             @NotNull @Min(1) @Max(7) Integer daysPerWeek,
             @NotNull @Min(15) @Max(180) Integer minutesPerSession,
@@ -59,6 +62,7 @@ public class ProfileController {
     @Transactional
     public Me update(@RequestAttribute(AuthInterceptor.USER_ID) UUID userId, @Valid @RequestBody UpdateProfile req) {
         AppUser u = load(userId);
+        if (req.name() != null && !req.name().isBlank()) u.setName(req.name().trim());
         u.updatePlan(req.goal(), req.daysPerWeek(), req.minutesPerSession());
         u.updateBody(req.sex(), req.birthYear(), req.heightCm(), req.weightKg(), req.calorieTarget());
         return toMe(users.save(u));
@@ -69,7 +73,8 @@ public class ProfileController {
     }
 
     private Me toMe(AppUser u) {
-        return new Me(u.getId(), u.getGoal(), u.getDaysPerWeek(), u.getMinutesPerSession(), u.getConsentAt(),
+        return new Me(u.getId(), u.getName(), u.getEmail(), u.getCreatedAt(),
+                u.getGoal(), u.getDaysPerWeek(), u.getMinutesPerSession(), u.getConsentAt(),
                 u.getSex(), u.getBirthYear(), u.getHeightCm(), u.getWeightKg(), u.getCalorieTarget(), targets.forUser(u));
     }
 }

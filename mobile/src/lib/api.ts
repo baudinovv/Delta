@@ -19,6 +19,7 @@ export type OnboardingRequest = {
   daysPerWeek: number;
   minutesPerSession: number;
   body?: Body;
+  account: { name: string; email: string; password: string };
 };
 
 export type Sex = 'MALE' | 'FEMALE';
@@ -28,6 +29,9 @@ export type Targets = { kcal: number; proteinG: number; fatG: number; carbsG: nu
 
 export type Me = {
   userId: string;
+  name?: string | null;
+  email?: string | null;
+  createdAt: string;
   goal: Goal;
   daysPerWeek: number;
   minutesPerSession: number;
@@ -40,6 +44,7 @@ export type Me = {
 };
 
 export type ProfileUpdate = Body & {
+  name?: string;
   goal: Goal;
   daysPerWeek: number;
   minutesPerSession: number;
@@ -139,8 +144,26 @@ async function request<T>(path: string, init: RequestInit & { token?: string | n
 }
 
 export const api = {
-  onboard: (req: OnboardingRequest) =>
-    request<OnboardingResponse>('/api/onboarding', { method: 'POST', body: JSON.stringify(req) }),
+  register: (req: OnboardingRequest) =>
+    request<OnboardingResponse>('/api/auth/register', { method: 'POST', body: JSON.stringify(req) }),
+
+  login: (email: string, password: string) =>
+    request<{ userId: string; token: string }>('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    }),
+
+  logout: (token: string) => request<void>('/api/auth/logout', { method: 'POST', token }),
+
+  changePassword: (token: string, currentPassword: string, newPassword: string) =>
+    request<void>('/api/auth/password', {
+      method: 'POST',
+      token,
+      body: JSON.stringify({ currentPassword, newPassword }),
+    }),
+
+  deleteAccount: (token: string, password: string) =>
+    request<void>('/api/auth/delete-account', { method: 'POST', token, body: JSON.stringify({ password }) }),
 
   me: (token: string) => request<Me>('/api/me', { token }),
 

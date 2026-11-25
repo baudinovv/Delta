@@ -47,7 +47,7 @@ export default function ProgressScreen() {
     new Date(`${iso}T00:00:00`).toLocaleDateString(locale, { day: 'numeric', month: 'short' });
 
   return (
-    <Screen title={t('progress.title')} onRefresh={load}>
+    <Screen inStack onRefresh={load}>
       <ErrorText message={error} />
 
       {summary && summary.exercises.length === 0 && (

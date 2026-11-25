@@ -18,8 +18,14 @@ public class AppUser {
     @Id
     private UUID id;
 
-    @Column(name = "token_hash", nullable = false, unique = true, length = 64)
-    private String tokenHash;
+    @Column(length = 254, unique = true)
+    private String email;
+
+    @Column(name = "password_hash", length = 100)
+    private String passwordHash;
+
+    @Column(length = 40)
+    private String name;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -54,9 +60,12 @@ public class AppUser {
 
     protected AppUser() {}
 
-    public AppUser(UUID id, String tokenHash, Instant now, Goal goal, int daysPerWeek, int minutesPerSession) {
+    public AppUser(UUID id, String email, String passwordHash, String name, Instant now,
+                   Goal goal, int daysPerWeek, int minutesPerSession) {
         this.id = id;
-        this.tokenHash = tokenHash;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.name = name;
         this.createdAt = now;
         this.consentAt = now;
         this.goal = goal;
@@ -65,7 +74,12 @@ public class AppUser {
     }
 
     public UUID getId() { return id; }
-    public String getTokenHash() { return tokenHash; }
+    public String getEmail() { return email; }
+    public String getPasswordHash() { return passwordHash; }
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
+    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
     public Instant getCreatedAt() { return createdAt; }
     public Instant getConsentAt() { return consentAt; }
     public Goal getGoal() { return goal; }

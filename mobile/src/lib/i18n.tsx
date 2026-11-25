@@ -34,12 +34,67 @@ const en = {
   'tab.coach': 'Coach',
   'tab.progress': 'Progress',
 
+  'tab.profile': 'Profile',
+
+  'auth.getStarted': 'Get started',
+  'auth.haveAccount': 'I already have an account',
+  'auth.loginTitle': 'Welcome back',
+  'auth.loginLead': 'Sign in to see your workouts and meals.',
+  'auth.email': 'Email',
+  'auth.password': 'Password',
+  'auth.signIn': 'Sign in',
+  'auth.noAccount': "Don't have an account?",
+  'auth.signUp': 'Sign up',
+  'auth.accountTitle': 'Create your account',
+  'auth.accountLead': 'Your workouts, meals and coach chat are saved to it and available on any device.',
+  'auth.name': 'Name',
+  'auth.namePh': 'What should we call you?',
+  'auth.passwordHint': 'At least 8 characters',
+  'auth.create': 'Create account',
+  'auth.show': 'Show password',
+
+  'err.emailTaken': 'An account with this email already exists. Sign in instead?',
+  'err.invalidCredentials': 'Wrong email or password.',
+  'err.tooMany': 'Too many attempts. Try again in 15 minutes.',
+  'err.wrongPassword': 'The password is wrong.',
+  'err.badEmail': 'Check the email address.',
+
+  'profile.since': 'With Delta since {d}',
+  'profile.statWeight': 'kg weight',
+  'profile.statStreak': 'days in a row',
+  'profile.statTarget': 'kcal a day',
+  'profile.secYou': 'You',
+  'profile.secApp': 'App',
+  'profile.personal': 'Personal data',
+  'profile.goals': 'Goal & plan',
+  'profile.progress': 'Progress',
+  'profile.progressSub': 'Weekly strength summary',
+  'profile.language': 'Language',
+  'profile.account': 'Account & security',
+  'profile.signOut': 'Sign out',
+  'profile.notSet': 'Not filled in',
+  'profile.perWeek': '{d}×/week · {m} min',
+
+  'account.email': 'Email',
+  'account.changePassword': 'Change password',
+  'account.current': 'Current password',
+  'account.new': 'New password',
+  'account.changed': 'Password changed. Other devices were signed out.',
+  'account.danger': 'Danger zone',
+  'account.delete': 'Delete account',
+  'account.deleteText': "Deletes your account, workouts, meals and coach chat for good. This can't be undone.",
+  'account.deleteConfirm': 'Enter your password to confirm',
+  'account.deleteBtn': 'Delete forever',
+
+  'progress.all': 'All progress',
+
   'err.network': 'No connection. Try again.',
   'err.aiLimit': 'The free AI quota is used up for now. Try again in a minute.',
   'err.aiDown': "The AI didn't answer. Try again.",
   'err.generic': 'Something went wrong. Try again.',
 
   'home.hello': 'Your day',
+  'home.hi': 'Hi',
   'home.eaten': 'eaten',
   'home.left': 'left',
   'home.over': 'over',
@@ -173,7 +228,7 @@ const en = {
   'ob.skip': 'Skip',
   'ob.consentTitle': 'Before you start',
   'ob.consentText':
-    "• Delta is a training log for healthy adults. It is not medical advice.\n• Stop and see a doctor if you feel pain, dizziness or chest discomfort.\n• We don't ask for your name. Your logs are stored under a random ID.\n• Meal photos are sent to Google Gemini for analysis and are not stored by Delta.\n• You can ask us to delete your data at any time.",
+    "• Delta is a training log for healthy adults. It is not medical advice.\n• Stop and see a doctor if you feel pain, dizziness or chest discomfort.\n• Your account is protected by a password. Other users never see your data.\n• Meal photos are sent to Google Gemini for analysis and are not stored by Delta.\n• You can ask us to delete your data at any time.",
   'ob.agree': "I've read this and agree.",
   'ob.start': 'Start',
   'ob.referredTitle': "Delta isn't the right fit right now",
@@ -220,12 +275,67 @@ const ru: Record<Key, string> = {
   'tab.coach': 'Тренер',
   'tab.progress': 'Прогресс',
 
+  'tab.profile': 'Профиль',
+
+  'auth.getStarted': 'Начать',
+  'auth.haveAccount': 'У меня уже есть аккаунт',
+  'auth.loginTitle': 'С возвращением',
+  'auth.loginLead': 'Войди, чтобы увидеть свои тренировки и питание.',
+  'auth.email': 'Email',
+  'auth.password': 'Пароль',
+  'auth.signIn': 'Войти',
+  'auth.noAccount': 'Нет аккаунта?',
+  'auth.signUp': 'Зарегистрироваться',
+  'auth.accountTitle': 'Создай аккаунт',
+  'auth.accountLead': 'В нём сохранятся тренировки, питание и чат с тренером — на любом устройстве.',
+  'auth.name': 'Имя',
+  'auth.namePh': 'Как к тебе обращаться?',
+  'auth.passwordHint': 'Минимум 8 символов',
+  'auth.create': 'Создать аккаунт',
+  'auth.show': 'Показать пароль',
+
+  'err.emailTaken': 'Аккаунт с таким email уже есть. Может, войти?',
+  'err.invalidCredentials': 'Неверный email или пароль.',
+  'err.tooMany': 'Слишком много попыток. Попробуй через 15 минут.',
+  'err.wrongPassword': 'Неверный пароль.',
+  'err.badEmail': 'Проверь email.',
+
+  'profile.since': 'В Delta с {d}',
+  'profile.statWeight': 'кг вес',
+  'profile.statStreak': 'дней подряд',
+  'profile.statTarget': 'ккал в день',
+  'profile.secYou': 'Ты',
+  'profile.secApp': 'Приложение',
+  'profile.personal': 'Личные данные',
+  'profile.goals': 'Цель и план',
+  'profile.progress': 'Прогресс',
+  'profile.progressSub': 'Недельная сводка по силе',
+  'profile.language': 'Язык',
+  'profile.account': 'Аккаунт и безопасность',
+  'profile.signOut': 'Выйти',
+  'profile.notSet': 'Не заполнено',
+  'profile.perWeek': '{d}×/нед · {m} мин',
+
+  'account.email': 'Email',
+  'account.changePassword': 'Сменить пароль',
+  'account.current': 'Текущий пароль',
+  'account.new': 'Новый пароль',
+  'account.changed': 'Пароль изменён. Другие устройства вышли из аккаунта.',
+  'account.danger': 'Опасная зона',
+  'account.delete': 'Удалить аккаунт',
+  'account.deleteText': 'Аккаунт, тренировки, питание и чат с тренером удалятся навсегда. Отменить нельзя.',
+  'account.deleteConfirm': 'Введи пароль для подтверждения',
+  'account.deleteBtn': 'Удалить навсегда',
+
+  'progress.all': 'Весь прогресс',
+
   'err.network': 'Нет соединения. Попробуй ещё раз.',
   'err.aiLimit': 'Бесплатный лимит ИИ пока исчерпан. Попробуй через минуту.',
   'err.aiDown': 'ИИ не ответил. Попробуй ещё раз.',
   'err.generic': 'Что-то пошло не так. Попробуй ещё раз.',
 
   'home.hello': 'Твой день',
+  'home.hi': 'Привет',
   'home.eaten': 'съедено',
   'home.left': 'осталось',
   'home.over': 'сверх',
@@ -359,7 +469,7 @@ const ru: Record<Key, string> = {
   'ob.skip': 'Пропустить',
   'ob.consentTitle': 'Перед стартом',
   'ob.consentText':
-    '• Delta — дневник тренировок для здоровых взрослых. Это не медицинский совет.\n• Остановись и обратись к врачу, если чувствуешь боль, головокружение или дискомфорт в груди.\n• Мы не спрашиваем имя. Записи хранятся под случайным ID.\n• Фото еды отправляются в Google Gemini для анализа, Delta их не хранит.\n• Ты можешь попросить удалить свои данные в любой момент.',
+    '• Delta — дневник тренировок для здоровых взрослых. Это не медицинский совет.\n• Остановись и обратись к врачу, если чувствуешь боль, головокружение или дискомфорт в груди.\n• Аккаунт защищён паролем. Другие пользователи не видят твоих данных.\n• Фото еды отправляются в Google Gemini для анализа, Delta их не хранит.\n• Ты можешь попросить удалить свои данные в любой момент.',
   'ob.agree': 'Я прочитал(а) и согласен(на).',
   'ob.start': 'Начать',
   'ob.referredTitle': 'Delta сейчас не подходит',
@@ -436,6 +546,12 @@ export function errorText(e: unknown, t: T): string {
     if (e.code === 'NETWORK') return t('err.network');
     if (e.code === 'AI_RATE_LIMIT') return t('err.aiLimit');
     if (e.code === 'AI_UNAVAILABLE') return t('err.aiDown');
+    if (e.code === 'EMAIL_TAKEN') return t('err.emailTaken');
+    if (e.code === 'INVALID_CREDENTIALS') return t('err.invalidCredentials');
+    if (e.code === 'TOO_MANY_ATTEMPTS') return t('err.tooMany');
+    if (e.code === 'WRONG_PASSWORD') return t('err.wrongPassword');
+    if (e.code === 'VALIDATION_FAILED' && e.message.includes('email')) return t('err.badEmail');
+    if (e.status >= 500) return t('err.generic');
     return e.message;
   }
   return t('err.generic');

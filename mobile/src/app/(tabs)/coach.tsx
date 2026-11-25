@@ -2,10 +2,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,7 +12,10 @@ import {
   type ScrollViewInstance,
 } from 'react-native';
 
-import { Banner, ErrorText, IconButton, Screen } from '@/components/ui';
+import Animated, { FadeIn, FadeInDown, FadeOut, ZoomIn } from 'react-native-reanimated';
+
+import { Appear, haptic, PressScale, TypingDots } from '@/components/motion';
+import { Banner, ErrorText, IconButton, Loading, Screen } from '@/components/ui';
 import { api, type CoachMessage } from '@/lib/api';
 import { errorText, useI18n } from '@/lib/i18n';
 import { useToken } from '@/lib/session';
@@ -31,10 +32,13 @@ export default function CoachScreen() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const scroll = useRef<ScrollViewInstance>(null);
+  /** Messages already on screen when the chat opened don't animate in; only new ones do. */
+  const seen = useRef(new Set<string>());
 
   const load = useCallback(async () => {
     try {
       const thread = await api.coachThread(token);
+      thread.messages.forEach((m) => seen.current.add(m.id));
       setMessages(thread.messages);
       setDemo(thread.demo);
       setError(null);
@@ -59,6 +63,7 @@ export default function CoachScreen() {
     setSending(true);
     setError(null);
     try {
+      haptic('tap');
       const reply = await api.askCoach(token, q, lang);
       setMessages((m) => [...(m ?? []), reply]);
     } catch (e) {
@@ -103,36 +108,44 @@ export default function CoachScreen() {
           keyboardShouldPersistTaps="handled">
           {demo && <Banner tone="warn" icon="flask" text={t('common.demo')} />}
 
-          {messages == null && <ActivityIndicator color={colors.accent} style={{ marginTop: space(10) }} />}
+          {messages == null && <Loading compact />}
 
           {empty && (
-            <View style={styles.empty}>
-              <View style={styles.avatarLg}>
+            <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(150)} style={styles.empty}>
+              <Animated.View entering={ZoomIn.springify().damping(12)} style={styles.avatarLg}>
                 <Ionicons name="sparkles" size={28} color={colors.accentInk} />
-              </View>
+              </Animated.View>
               <Text style={[type.body, { textAlign: 'center', color: colors.muted }]}>{t('coach.empty')}</Text>
               <View style={styles.suggestions}>
-                {suggestions.map((s) => (
-                  <Pressable
-                    key={s}
-                    accessibilityRole="button"
-                    onPress={() => send(s)}
-                    style={({ pressed }) => [styles.suggestion, pressed && { opacity: 0.7 }]}>
-                    <Text style={[type.body, { flex: 1, fontSize: 15 }]}>{s}</Text>
-                    <Ionicons name="arrow-forward" size={16} color={colors.accent} />
-                  </Pressable>
+                {suggestions.map((s, i) => (
+                  <Appear key={s} index={i + 2}>
+                    <PressScale
+                      accessibilityRole="button"
+                      onPress={() => send(s)}
+                      hapticKind="tap"
+                      style={styles.suggestion}>
+                      <Text style={[type.body, { flex: 1, fontSize: 15 }]}>{s}</Text>
+                      <Ionicons name="arrow-forward" size={16} color={colors.accent} />
+                    </PressScale>
+                  </Appear>
                 ))}
               </View>
-            </View>
+            </Animated.View>
           )}
 
           {messages?.map((m) =>
             m.role === 'user' ? (
-              <View key={m.id} style={[styles.bubble, styles.mine]}>
+              <Animated.View
+                key={m.id}
+                entering={seen.current.has(m.id) ? undefined : FadeInDown.springify().damping(16)}
+                style={[styles.bubble, styles.mine]}>
                 <Text style={[type.body, { color: colors.accentInk }]}>{m.content}</Text>
-              </View>
+              </Animated.View>
             ) : (
-              <View key={m.id} style={styles.coachRow}>
+              <Animated.View
+                key={m.id}
+                entering={seen.current.has(m.id) ? undefined : FadeInDown.duration(350)}
+                style={styles.coachRow}>
                 <View style={styles.avatar}>
                   <Ionicons name="sparkles" size={14} color={colors.accentInk} />
                 </View>
@@ -141,20 +154,22 @@ export default function CoachScreen() {
                     {clean(m.content)}
                   </Text>
                 </View>
-              </View>
+              </Animated.View>
             ),
           )}
 
           {sending && (
-            <View style={styles.coachRow}>
+            <Animated.View entering={FadeIn.delay(150)} exiting={FadeOut.duration(120)} style={styles.coachRow}>
               <View style={styles.avatar}>
                 <Ionicons name="sparkles" size={14} color={colors.accentInk} />
               </View>
-              <View style={[styles.bubble, styles.theirs, { flexDirection: 'row', gap: space(2), alignItems: 'center' }]}>
-                <ActivityIndicator size="small" color={colors.muted} />
-                <Text style={type.small}>{t('coach.thinking')}</Text>
+              <View
+                style={[styles.bubble, styles.theirs]}
+                accessibilityLabel={t('coach.thinking')}
+                accessibilityLiveRegion="polite">
+                <TypingDots color={colors.muted} />
               </View>
-            </View>
+            </Animated.View>
           )}
 
           <ErrorText message={error} />

@@ -3,10 +3,13 @@ package app.delta.onboarding;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,8 +22,15 @@ public record OnboardingRequest(
         @NotNull Goal goal,
         @NotNull @Min(1) @Max(7) Integer daysPerWeek,
         @NotNull @Min(15) @Max(180) Integer minutesPerSession,
-        @Valid Body body
+        @Valid Body body,
+        @NotNull @Valid Account account
 ) {
+    public record Account(
+            @NotBlank @Size(max = 40) String name,
+            @NotBlank @Email @Size(max = 254) String email,
+            @NotBlank @Size(min = 8, max = 72) String password
+    ) {}
+
     /** Optional at onboarding; used for calorie targets. */
     public record Body(
             @Pattern(regexp = "MALE|FEMALE") String sex,

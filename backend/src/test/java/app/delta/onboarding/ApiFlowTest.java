@@ -29,12 +29,13 @@ class ApiFlowTest {
                 {"adult": %s,
                  "screening": {"heartCondition": false, "chestPain": false, "dizziness": false,
                                "injury": %s, "pregnant": false},
-                 "consent": %s, "goal": "GET_STRONGER", "daysPerWeek": 3, "minutesPerSession": 45}
-                """.formatted(adult, injury, consent);
+                 "consent": %s, "goal": "GET_STRONGER", "daysPerWeek": 3, "minutesPerSession": 45,
+                 "account": {"name": "Test", "email": "%s@example.com", "password": "secret-pass-1"}}
+                """.formatted(adult, injury, consent, java.util.UUID.randomUUID());
     }
 
     private String onboardAndGetToken() throws Exception {
-        String body = mvc.perform(post("/api/onboarding").contentType(MediaType.APPLICATION_JSON)
+        String body = mvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
                         .content(onboarding(true, false, true)))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
@@ -44,7 +45,7 @@ class ApiFlowTest {
     @Test
     void under18IsReferredAndNothingStored() throws Exception {
         Integer before = jdbc.queryForObject("select count(*) from users", Integer.class);
-        mvc.perform(post("/api/onboarding").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
                         .content(onboarding(false, false, true)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("REFERRED"))
@@ -55,26 +56,33 @@ class ApiFlowTest {
 
     @Test
     void anyHealthFlagIsReferred() throws Exception {
-        mvc.perform(post("/api/onboarding").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON)
                         .content(onboarding(true, true, true)))
                 .andExpect(jsonPath("$.status").value("REFERRED"))
                 .andExpect(jsonPath("$.reason").value("HEALTH_SCREENING"));
     }
 
     @Test
-    void eligibleUserGetsIdAndOnboardingRecordWithoutName() throws Exception {
+    void eligibleUserGetsProfileAndCredentialsAreStoredHashed() throws Exception {
         String token = onboardAndGetToken();
         mvc.perform(get("/api/me").header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Test"))
+                .andExpect(jsonPath("$.email").exists())
                 .andExpect(jsonPath("$.goal").value("GET_STRONGER"))
                 .andExpect(jsonPath("$.daysPerWeek").value(3))
                 .andExpect(jsonPath("$.minutesPerSession").value(45))
-                .andExpect(jsonPath("$.consentAt").exists());
+                .andExpect(jsonPath("$.consentAt").exists())
+                .andExpect(jsonPath("$.passwordHash").doesNotExist());
 
+        assertThat(jdbc.queryForList("select password_hash from users where password_hash is not null", String.class))
+                .allMatch(h -> h.startsWith("$2"));
+        assertThat(jdbc.queryForObject("select count(*) from sessions where token_hash = ?", Integer.class, token))
+                .isZero();
         var columns = jdbc.queryForList(
-                "select lower(column_name) from information_schema.columns where lower(table_schema) = 'public' and lower(table_name) in ('users','set_logs')",
+                "select lower(column_name) from information_schema.columns where lower(table_schema) = 'public' and lower(table_name) = 'users'",
                 String.class);
-        assertThat(columns).noneMatch(c -> c.contains("name") || c.contains("email") || c.contains("phone"));
+        assertThat(columns).noneMatch(c -> c.contains("phone") || c.contains("address"));
     }
 
     @Test

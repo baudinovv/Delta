@@ -1,18 +1,30 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router, useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+  ZoomIn,
+} from 'react-native-reanimated';
+
 import { BarChart, MacroBar, Ring, Sparkline } from '@/components/charts';
-import { Button, Card, ErrorText, IconButton, Loading, Screen, SectionTitle, type IconName } from '@/components/ui';
+import { CountUp, PressScale } from '@/components/motion';
+import { Avatar, Button, Card, ErrorText, Loading, Screen, SectionTitle, type IconName } from '@/components/ui';
 import { api, type Dashboard } from '@/lib/api';
 import { errorText, useI18n } from '@/lib/i18n';
+import { useMe } from '@/lib/me';
 import { useToken } from '@/lib/session';
 import { colors, radius, space, type } from '@/lib/theme';
 
 export default function HomeScreen() {
   const token = useToken();
   const { t, ex, locale } = useI18n();
+  const { me } = useMe();
   const [data, setData] = useState<Dashboard | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,9 +53,18 @@ export default function HomeScreen() {
   return (
     <Screen
       subtitle={dateLabel}
-      title={t('home.hello')}
+      title={me?.name ? `${t('home.hi')}, ${me.name.split(' ')[0]}` : t('home.hello')}
       onRefresh={load}
-      right={<IconButton icon="person-outline" label={t('settings.title')} onPress={() => router.push('/settings')} />}>
+      right={
+        <PressScale
+          accessibilityRole="button"
+          accessibilityLabel={t('tab.profile')}
+          onPress={() => router.push('/profile')}
+          scaleTo={0.9}
+          hapticKind="tap">
+          <Avatar name={me?.name} size={44} />
+        </PressScale>
+      }>
       <ErrorText message={error} />
 
       {data && (
@@ -54,17 +75,22 @@ export default function HomeScreen() {
             <Stat icon="barbell" value={`${data.workoutsThisWeek}/${data.plannedPerWeek}`} label={t('home.statWorkouts')}>
               <View style={styles.dots}>
                 {Array.from({ length: data.plannedPerWeek }, (_, i) => (
-                  <View key={i} style={[styles.dot, i < data.workoutsThisWeek && { backgroundColor: colors.accent }]} />
+                  <Animated.View
+                    key={i}
+                    entering={ZoomIn.delay(300 + i * 90).springify()}
+                    style={[styles.dot, i < data.workoutsThisWeek && { backgroundColor: colors.accent }]}
+                  />
                 ))}
               </View>
             </Stat>
             <Stat
               icon="flame"
               iconColor={data.streakDays > 0 ? colors.fat : colors.faint}
-              value={String(data.streakDays)}
+              value={<CountUp value={data.streakDays} />}
               label={t('home.statStreak')}
+              pulse={data.streakDays > 0}
             />
-            <Stat icon="layers" iconColor={colors.protein} value={String(data.setsToday)} label={t('home.statSets')} />
+            <Stat icon="layers" iconColor={colors.protein} value={<CountUp value={data.setsToday} />} label={t('home.statSets')} />
           </View>
 
           <View style={styles.actions}>
@@ -98,7 +124,14 @@ export default function HomeScreen() {
             />
           </Card>
 
-          <SectionTitle>{t('home.lifts')}</SectionTitle>
+          <SectionTitle
+            right={
+              <Pressable accessibilityRole="button" onPress={() => router.push('/progress')} hitSlop={8}>
+                <Text style={{ color: colors.accent, fontWeight: '700', fontSize: 13 }}>{t('progress.all')} ›</Text>
+              </Pressable>
+            }>
+            {t('home.lifts')}
+          </SectionTitle>
           <Card style={{ gap: space(4) }}>
             {data.lifts.length === 0 ? (
               <Text style={type.small}>{t('home.noLifts')}</Text>
@@ -146,7 +179,9 @@ function CaloriesCard({ data }: { data: Dashboard }) {
     <Card style={{ padding: space(5) }}>
       <View style={styles.calRow}>
         <Ring value={data.kcalToday} max={target?.kcal ?? 0} size={150} stroke={13}>
-          <Text style={[type.display, { fontSize: 32 }]}>{data.kcalToday}</Text>
+          <Text style={[type.display, { fontSize: 32 }]}>
+            <CountUp value={data.kcalToday} />
+          </Text>
           <Text style={type.small}>{t('home.eaten')}</Text>
         </Ring>
         <View style={{ flex: 1, gap: space(1) }}>
@@ -154,7 +189,7 @@ function CaloriesCard({ data }: { data: Dashboard }) {
             <>
               <Text style={type.caption}>{left >= 0 ? t('home.left') : t('home.over')}</Text>
               <Text style={[type.display, { fontSize: 34, color: left >= 0 ? colors.text : colors.down }]}>
-                {Math.abs(left)}
+                <CountUp value={Math.abs(left)} />
               </Text>
               <Text style={type.small}>
                 {t('common.kcal')} · {t('home.target')} {target.kcal}
@@ -167,7 +202,7 @@ function CaloriesCard({ data }: { data: Dashboard }) {
                 title={t('home.fillProfile')}
                 size="md"
                 variant="secondary"
-                onPress={() => router.push('/settings')}
+                onPress={() => router.push('/profile/personal')}
                 style={{ marginTop: space(2) }}
               />
             </>
@@ -205,18 +240,22 @@ function Stat({
   icon,
   iconColor = colors.accent,
   value,
+  pulse,
   label,
   children,
 }: {
   icon: IconName;
   iconColor?: string;
-  value: string;
+  value: React.ReactNode;
+  pulse?: boolean;
   label: string;
   children?: React.ReactNode;
 }) {
   return (
     <Card style={styles.stat}>
-      <Ionicons name={icon} size={18} color={iconColor} />
+      <Pulse active={!!pulse}>
+        <Ionicons name={icon} size={18} color={iconColor} />
+      </Pulse>
       <Text style={[type.display, { fontSize: 28, marginTop: space(2) }]}>{value}</Text>
       {children}
       <Text style={[type.small, { fontSize: 12, lineHeight: 15, marginTop: space(1) }]} numberOfLines={2}>
@@ -240,20 +279,18 @@ function Action({
   accent?: boolean;
 }) {
   return (
-    <Pressable
+    <PressScale
       accessibilityRole="button"
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.action,
-        accent && { backgroundColor: colors.accent, borderColor: colors.accent },
-        pressed && { opacity: 0.85 },
-      ]}>
+      hapticKind="tap"
+      scaleTo={0.96}
+      style={[styles.action, accent && { backgroundColor: colors.accent, borderColor: colors.accent }]}>
       <View style={[styles.actionIcon, accent && { backgroundColor: 'rgba(10,12,15,0.12)' }]}>
         <Ionicons name={icon} size={20} color={accent ? colors.accentInk : colors.accent} />
       </View>
       <Text style={[type.h3, { fontSize: 16 }, accent && { color: colors.accentInk }]}>{title}</Text>
       <Text style={[type.small, { fontSize: 13 }, accent && { color: 'rgba(10,12,15,0.7)' }]}>{sub}</Text>
-    </Pressable>
+    </PressScale>
   );
 }
 
@@ -285,3 +322,15 @@ const styles = StyleSheet.create({
   liftRow: { flexDirection: 'row', alignItems: 'center', gap: space(3) },
   delta: { fontSize: 12, fontWeight: '700', fontVariant: ['tabular-nums'] },
 });
+
+/** Gentle heartbeat for the streak flame. */
+function Pulse({ active, children }: { active: boolean; children: React.ReactNode }) {
+  const scale = useSharedValue(1);
+  useEffect(() => {
+    scale.value = active
+      ? withRepeat(withTiming(1.18, { duration: 700, easing: Easing.inOut(Easing.quad) }), -1, true)
+      : withTiming(1);
+  }, [active, scale]);
+  const animated = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+  return <Animated.View style={[{ alignSelf: 'flex-start' }, animated]}>{children}</Animated.View>;
+}

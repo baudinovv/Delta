@@ -16,6 +16,7 @@ type Session = {
   ready: boolean;
   signIn: (token: string) => Promise<void>;
   signOut: () => Promise<void>;
+  forget: () => Promise<void>;
 };
 
 const SessionContext = createContext<Session | null>(null);
@@ -45,12 +46,21 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setToken(t);
   }, []);
 
+  /** Ends the session on the server too; local sign-out happens even if the server is unreachable. */
   const signOut = useCallback(async () => {
+    const current = await store.get();
+    if (current) api.logout(current).catch(() => undefined);
     await store.clear();
     setToken(null);
   }, []);
 
-  const value = useMemo(() => ({ token, ready, signIn, signOut }), [token, ready, signIn, signOut]);
+  /** After deleting the account the server session is already gone. */
+  const forget = useCallback(async () => {
+    await store.clear();
+    setToken(null);
+  }, []);
+
+  const value = useMemo(() => ({ token, ready, signIn, signOut, forget }), [token, ready, signIn, signOut, forget]);
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 }
 

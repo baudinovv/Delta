@@ -1,6 +1,6 @@
 package app.delta.common;
 
-import app.delta.onboarding.UserRepository;
+import app.delta.auth.SessionRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -10,11 +10,13 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class AuthInterceptor implements HandlerInterceptor {
 
     public static final String USER_ID = "userId";
+    /** SHA-256 of the bearer token, i.e. the current session id. */
+    public static final String SESSION = "sessionTokenHash";
 
-    private final UserRepository users;
+    private final SessionRepository sessions;
 
-    public AuthInterceptor(UserRepository users) {
-        this.users = users;
+    public AuthInterceptor(SessionRepository sessions) {
+        this.sessions = sessions;
     }
 
     @Override
@@ -23,8 +25,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         String header = request.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) throw ApiException.unauthorized();
         String token = header.substring("Bearer ".length()).trim();
-        var user = users.findByTokenHash(Tokens.hash(token)).orElseThrow(ApiException::unauthorized);
-        request.setAttribute(USER_ID, user.getId());
+        String hash = Tokens.hash(token);
+        var session = sessions.findById(hash).orElseThrow(ApiException::unauthorized);
+        request.setAttribute(USER_ID, session.getUserId());
+        request.setAttribute(SESSION, hash);
         return true;
     }
 }

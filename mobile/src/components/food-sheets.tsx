@@ -1,7 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState, type ReactNode } from 'react';
 import {
-  ActivityIndicator,
   Image,
   KeyboardAvoidingView,
   Modal,
@@ -13,8 +12,22 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import Animated, {
+  Easing,
+  FadeIn,
+  FadeInDown,
+  FadeOut,
+  FadeOutLeft,
+ 
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+  ZoomIn,
+} from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { CountUp, haptic, listLayout } from '@/components/motion';
 import { Banner, Button, Card, Chip, ErrorText, Field, IconButton } from '@/components/ui';
 import { api, type Analysis, type FoodItem, type Meal } from '@/lib/api';
 import { errorText, useI18n } from '@/lib/i18n';
@@ -118,6 +131,7 @@ export function ScanSheet({
     try {
       const a = await api.analyzeFood(token, p.base64, lang, extra);
       setAnalysis(a);
+      haptic(a.food ? 'success' : 'warn');
       setRows(a.items.map((i) => ({ base: i, grams: i.grams ? String(i.grams) : '', removed: false })));
     } catch (e) {
       setError(errorText(e, t));
@@ -151,6 +165,7 @@ export function ScanSheet({
     setSaving(true);
     try {
       await api.addFood(token, { date, meal, source: 'PHOTO', items });
+      haptic('success');
       onSaved();
     } catch (e) {
       setError(errorText(e, t));
@@ -165,17 +180,19 @@ export function ScanSheet({
         <View style={styles.photoWrap}>
           <Image source={{ uri: photo.uri }} style={styles.photo} resizeMode="cover" />
           {busy && (
-            <View style={styles.photoOverlay}>
-              <ActivityIndicator color={colors.accent} size="large" />
+            <Animated.View entering={FadeIn} exiting={FadeOut.duration(250)} style={styles.photoOverlay}>
+              <ScanLine />
               <Text style={[type.h3, { marginTop: space(3) }]}>{t('food.analyzing')}</Text>
               <Text style={type.small}>{t('food.analyzingSub')}</Text>
-            </View>
+            </Animated.View>
           )}
           {analysis && !busy && analysis.food && (
-            <View style={styles.photoBadge}>
-              <Text style={styles.photoKcal}>{total.kcal}</Text>
+            <Animated.View entering={ZoomIn.springify().damping(14)} style={styles.photoBadge}>
+              <Text style={styles.photoKcal}>
+                <CountUp value={total.kcal} />
+              </Text>
               <Text style={[type.small, { color: colors.text }]}>{t('common.kcal')}</Text>
-            </View>
+            </Animated.View>
           )}
         </View>
       )}
@@ -189,11 +206,11 @@ export function ScanSheet({
 
       {analysis && !busy && analysis.food && (
         <>
-          <View style={styles.macroRow}>
+          <Animated.View entering={FadeInDown.delay(120)} style={styles.macroRow}>
             <MacroPill label={t('macro.protein')} value={total.p} color={colors.protein} />
             <MacroPill label={t('macro.fat')} value={total.f} color={colors.fat} />
             <MacroPill label={t('macro.carbs')} value={total.c} color={colors.carbs} />
-          </View>
+          </Animated.View>
 
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: space(2) }}>
             <Ionicons
@@ -211,7 +228,12 @@ export function ScanSheet({
             <Text style={[type.small, { paddingVertical: space(1) }]}>{t('food.adjust')}</Text>
             {rows.map((r, idx) =>
               r.removed ? null : (
-                <View key={idx} style={styles.itemRow}>
+                <Animated.View
+                  key={idx}
+                  entering={FadeInDown.delay(200 + idx * 70)}
+                  exiting={FadeOutLeft.duration(200)}
+                  layout={listLayout}
+                  style={styles.itemRow}>
                   <View style={{ flex: 1 }}>
                     <Text style={[type.body, { fontWeight: '600' }]}>{r.base.name}</Text>
                     <Text style={[type.small, type.num, { fontSize: 13 }]}>{scaled(r).kcal} {t('common.kcal')}</Text>
@@ -232,7 +254,7 @@ export function ScanSheet({
                     onPress={() => setRows((rs) => rs.map((x, i) => (i === idx ? { ...x, removed: true } : x)))}>
                     <Ionicons name="trash-outline" size={18} color={colors.faint} />
                   </Pressable>
-                </View>
+                </Animated.View>
               ),
             )}
           </Card>
@@ -261,11 +283,29 @@ export function ScanSheet({
   );
 }
 
+/** Glowing line sweeping over the photo while the AI looks at it. */
+function ScanLine() {
+  const [h, setH] = useState(0);
+  const y = useSharedValue(0);
+  useEffect(() => {
+    if (!h) return;
+    y.value = withRepeat(withTiming(h - 4, { duration: 1400, easing: Easing.inOut(Easing.quad) }), -1, true);
+  }, [h, y]);
+  const animated = useAnimatedStyle(() => ({ transform: [{ translateY: y.value }] }));
+  return (
+    <View style={StyleSheet.absoluteFill} onLayout={(e) => setH(e.nativeEvent.layout.height)} pointerEvents="none">
+      <Animated.View style={[styles.scanLine, animated]} />
+    </View>
+  );
+}
+
 function MacroPill({ label, value, color }: { label: string; value: number; color: string }) {
   return (
     <View style={styles.macroPill}>
       <View style={[styles.macroDot, { backgroundColor: color }]} />
-      <Text style={[type.h3, type.num]}>{Math.round(value)}</Text>
+      <Text style={[type.h3, type.num]}>
+        <CountUp value={value} />
+      </Text>
       <Text style={[type.small, { fontSize: 12 }]}>{label}</Text>
     </View>
   );
@@ -372,6 +412,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(10,12,15,0.72)',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  scanLine: {
+    height: 3,
+    marginHorizontal: space(3),
+    borderRadius: 2,
+    backgroundColor: colors.accent,
+    shadowColor: colors.accent,
+    shadowOpacity: 0.9,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 0 },
   },
   photoBadge: {
     position: 'absolute',

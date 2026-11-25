@@ -3,6 +3,9 @@ import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import Animated, { FadeInDown, FadeOutLeft, ZoomIn, ZoomOut } from 'react-native-reanimated';
+
+import { CountUp, haptic, listLayout, PressScale } from '@/components/motion';
 import { Button, Card, ErrorText, Field, Loading, Screen, SectionTitle } from '@/components/ui';
 import { api, type LoggedSet, type PrefillRow } from '@/lib/api';
 import { errorText, useI18n } from '@/lib/i18n';
@@ -69,6 +72,7 @@ export default function WorkoutScreen() {
     setSavingExercise(exercise);
     try {
       await api.logSet(token, exercise, weight, reps);
+      haptic('success');
       await load();
     } catch (e) {
       setError(errorText(e, t));
@@ -77,12 +81,16 @@ export default function WorkoutScreen() {
     }
   };
 
+  /** Optimistic: the set disappears right away (animated), the server catches up. */
   const remove = async (id: string) => {
+    haptic('tap');
+    setTodaySets((list) => list.filter((x) => x.id !== id));
     try {
       await api.deleteSet(token, id);
       await load();
     } catch (e) {
       setError(errorText(e, t));
+      load();
     }
   };
 
@@ -107,10 +115,14 @@ export default function WorkoutScreen() {
         onRefresh={load}
         right={
           <View style={styles.todayStats}>
-            <Text style={[type.h2, type.num]}>{todaySets.length}</Text>
+            <Text style={[type.h2, type.num]}>
+              <CountUp value={todaySets.length} />
+            </Text>
             <Text style={[type.small, { fontSize: 12 }]}>{t('workout.sets')}</Text>
             <View style={styles.divider} />
-            <Text style={[type.h2, type.num]}>{Math.round(volume)}</Text>
+            <Text style={[type.h2, type.num]}>
+              <CountUp value={volume} />
+            </Text>
             <Text style={[type.small, { fontSize: 12 }]}>{t('common.kg')}</Text>
           </View>
         }>
@@ -141,11 +153,16 @@ export default function WorkoutScreen() {
               {done.length > 0 && (
                 <View style={styles.doneRow}>
                   {done.map((s, i) => (
-                    <View key={s.id} style={styles.donePill}>
+                    <Animated.View
+                      key={s.id}
+                      entering={ZoomIn.springify().damping(12)}
+                      exiting={ZoomOut.duration(150)}
+                      layout={listLayout}
+                      style={styles.donePill}>
                       <Text style={styles.doneText}>
                         {i + 1}. {s.weightKg}×{s.reps}
                       </Text>
-                    </View>
+                    </Animated.View>
                   ))}
                 </View>
               )}
@@ -201,7 +218,12 @@ export default function WorkoutScreen() {
         ) : (
           <Card style={{ paddingVertical: space(1) }}>
             {todaySets.map((s, i) => (
-              <View key={s.id} style={[styles.loggedRow, i > 0 && styles.loggedBorder]}>
+              <Animated.View
+                key={s.id}
+                entering={FadeInDown.duration(280)}
+                exiting={FadeOutLeft.duration(200)}
+                layout={listLayout}
+                style={[styles.loggedRow, i > 0 && styles.loggedBorder]}>
                 <Text style={[type.body, { flex: 1 }]}>{ex(s.exercise)}</Text>
                 <Text style={[type.body, type.num, { fontWeight: '700' }]}>
                   {s.weightKg} {t('common.kg')} × {s.reps}
@@ -209,7 +231,7 @@ export default function WorkoutScreen() {
                 <Pressable accessibilityRole="button" onPress={() => remove(s.id)} hitSlop={12}>
                   <Text style={styles.undo}>{t('workout.undo')}</Text>
                 </Pressable>
-              </View>
+              </Animated.View>
             ))}
           </Card>
         )}
@@ -229,9 +251,15 @@ function Stepper(props: {
   return (
     <View style={{ flex: 1, gap: space(1.5) }}>
       <View style={styles.stepper}>
-        <Pressable accessibilityLabel={`- ${props.label}`} onPress={props.onMinus} style={styles.stepBtn} hitSlop={4}>
+        <PressScale
+          accessibilityLabel={`- ${props.label}`}
+          onPress={props.onMinus}
+          style={styles.stepBtn}
+          hitSlop={4}
+          scaleTo={0.85}
+          hapticKind="select">
           <Ionicons name="remove" size={20} color={colors.text} />
-        </Pressable>
+        </PressScale>
         <TextInput
           style={styles.input}
           value={props.value}
@@ -241,9 +269,15 @@ function Stepper(props: {
           placeholderTextColor={colors.faint}
           selectTextOnFocus
         />
-        <Pressable accessibilityLabel={`+ ${props.label}`} onPress={props.onPlus} style={styles.stepBtn} hitSlop={4}>
+        <PressScale
+          accessibilityLabel={`+ ${props.label}`}
+          onPress={props.onPlus}
+          style={styles.stepBtn}
+          hitSlop={4}
+          scaleTo={0.85}
+          hapticKind="select">
           <Ionicons name="add" size={20} color={colors.text} />
-        </Pressable>
+        </PressScale>
       </View>
       <Text style={styles.unit}>{props.label}</Text>
     </View>

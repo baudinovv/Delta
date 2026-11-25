@@ -49,9 +49,13 @@ Troubleshooting:
 
 | Method | Path | |
 |---|---|---|
-| POST | `/api/onboarding` | 18+ check, health questions, consent, goal/days/minutes, optional body (sex, birth year, height, weight). Returns token |
-| GET | `/api/me` | profile + daily calorie/macro targets |
-| PUT | `/api/profile` | update goal, plan, body, own calorie target |
+| POST | `/api/auth/register` | sign up: 18+ check, health questions, consent, goal/days/minutes, optional body, and `account` {name, email, password ≥ 8}. The account is created only if screening passes. Returns token |
+| POST | `/api/auth/login` | email + password → token. 5 failed attempts per email lock it for 15 min |
+| POST | `/api/auth/logout` | ends the current session (other devices stay signed in) |
+| POST | `/api/auth/password` | change password; signs out other devices |
+| POST | `/api/auth/delete-account` | deletes the account and all its data (password required) |
+| GET | `/api/me` | profile (name, email) + daily calorie/macro targets |
+| PUT | `/api/profile` | update name, goal, plan, body, own calorie target |
 | GET | `/api/dashboard` | today's calories/macros, 7-day calories and training volume, workouts this week, streak, top lifts by week |
 | GET | `/api/log/today` | exercises with last weight x reps prefilled |
 | POST | `/api/log/sets` | log a set |
@@ -65,6 +69,6 @@ Troubleshooting:
 | POST | `/api/coach/messages` | ask the coach; it sees the profile, last 14 days of sets and today's food |
 | DELETE | `/api/coach/messages` | clear the chat |
 
-Everything except onboarding needs `Authorization: Bearer <token>`.
+Everything except register/login needs `Authorization: Bearer <token>`. Passwords are stored as BCrypt hashes, session tokens as SHA-256 (one row per device in `sessions`).
 
 Calorie target: Mifflin-St Jeor BMR × activity (from training days per week) + goal adjustment (+300 kcal build muscle, +150 get stronger). Protein 1.8 g/kg, fat 27% of calories, carbs the rest. Users can set their own target instead.
