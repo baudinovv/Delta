@@ -103,6 +103,7 @@ export function BarChart({
   height = 120,
   color = colors.accent,
   format = (n: number) => String(Math.round(n)),
+  showValues = true,
 }: {
   values: number[];
   labels: string[];
@@ -110,6 +111,8 @@ export function BarChart({
   height?: number;
   color?: string;
   format?: (n: number) => string;
+  /** Off for long ranges (14/30 days) where per-bar numbers don't fit. */
+  showValues?: boolean;
 }) {
   const max = Math.max(1, target ?? 0, ...values) * 1.08;
   const n = values.length;
@@ -117,7 +120,7 @@ export function BarChart({
 
   return (
     <View>
-      <View style={{ height, flexDirection: 'row', alignItems: 'flex-end', gap: space(2) }}>
+      <View style={{ height, flexDirection: 'row', alignItems: 'flex-end', gap: n > 14 ? 3 : space(2) }}>
         {values.map((v, i) => (
           <Bar
             key={i}
@@ -132,13 +135,17 @@ export function BarChart({
           <Animated.View entering={FadeIn.delay(500)} style={[styles.targetLine, { top: targetY }]} pointerEvents="none" />
         )}
       </View>
-      <View style={{ flexDirection: 'row', marginTop: space(2), gap: space(2) }}>
+      <View style={{ flexDirection: 'row', marginTop: space(2), gap: n > 14 ? 3 : space(2) }}>
         {labels.map((l, i) => (
           <View key={i} style={{ flex: 1, alignItems: 'center' }}>
-            <Text style={[styles.barLabel, i === n - 1 && { color: colors.text }]}>{l}</Text>
-            <Text style={[styles.barValue, i === n - 1 && { color: colors.text }]}>
-              {values[i] > 0 ? format(values[i]) : '–'}
+            <Text style={[styles.barLabel, i === n - 1 && { color: colors.text }]} numberOfLines={1}>
+              {l}
             </Text>
+            {showValues && (
+              <Text style={[styles.barValue, i === n - 1 && { color: colors.text }]}>
+                {values[i] > 0 ? format(values[i]) : '–'}
+              </Text>
+            )}
           </View>
         ))}
       </View>

@@ -53,6 +53,12 @@ function RootStack() {
         <Stack.Screen name="profile/goals" options={{ ...pushed, title: t('profile.goals') }} />
         <Stack.Screen name="profile/language" options={{ ...pushed, title: t('profile.language') }} />
         <Stack.Screen name="profile/account" options={{ ...pushed, title: t('profile.account') }} />
+        <Stack.Screen name="food/add" options={{ ...pushed, title: t('food.add') }} />
+        <Stack.Screen name="food/item" options={{ ...pushed, title: '' }} />
+        <Stack.Screen name="food/scan" options={{ animation: 'slide_from_bottom' }} />
+        <Stack.Screen name="food/new" options={{ ...pushed, title: t('nf.title') }} />
+        <Stack.Screen name="food/recipe" options={{ ...pushed, title: t('rc.title') }} />
+        <Stack.Screen name="food/report" options={{ ...pushed, title: t('rp.title') }} />
       </Stack.Protected>
     </Stack>
   );

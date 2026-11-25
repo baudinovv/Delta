@@ -5,7 +5,7 @@ import app.delta.common.ApiException;
 import app.delta.nutrition.NutritionDtos.AnalyzeRequest;
 import app.delta.nutrition.NutritionDtos.AnalyzedItem;
 import app.delta.nutrition.NutritionDtos.Analysis;
-import app.delta.nutrition.NutritionDtos.Totals;
+import app.delta.nutrition.NutritionDtos.AnalysisTotals;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 
@@ -84,7 +84,7 @@ public class FoodAnalyzer {
         return BigDecimal.valueOf(Math.max(0, n.asDouble())).setScale(1, RoundingMode.HALF_UP);
     }
 
-    private static Totals totals(List<AnalyzedItem> items) {
+    private static AnalysisTotals totals(List<AnalyzedItem> items) {
         int k = 0;
         double p = 0, f = 0, c = 0;
         for (AnalyzedItem i : items) {
@@ -93,6 +93,6 @@ public class FoodAnalyzer {
             f += i.fatG().doubleValue();
             c += i.carbsG().doubleValue();
         }
-        return new Totals(k, (int) Math.round(p), (int) Math.round(f), (int) Math.round(c));
+        return new AnalysisTotals(k, (int) Math.round(p), (int) Math.round(f), (int) Math.round(c));
     }
 }

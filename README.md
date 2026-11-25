@@ -61,8 +61,17 @@ Troubleshooting:
 | POST | `/api/log/sets` | log a set |
 | DELETE | `/api/log/sets/{id}` | delete a set |
 | GET | `/api/summary/weekly` | weekly summary |
-| GET | `/api/nutrition/day?date=` | food diary for a day with totals and targets |
-| POST | `/api/nutrition/entries` | add food items to a meal |
+| GET | `/api/nutrition/day?date=` | food diary for a day: entries, totals (incl. fiber/sugar), targets, water |
+| POST | `/api/nutrition/entries` | add items to a meal: a catalog food (`foodId` + `grams`, nutrition computed on the server) or a free-form item (name + kcal + macros) |
+| POST | `/api/nutrition/copy` | copy a meal from another day ("same as yesterday") |
+| POST | `/api/nutrition/water` | add/remove water (`deltaMl`) for a day |
+| GET | `/api/nutrition/report?days=7\|14\|30` | per-day totals, averages, macro energy split, days on target, top foods |
+| GET | `/api/foods/search?q=&lang=&online=` | search the catalog (built-in + own foods); `online=true` also searches Open Food Facts |
+| GET | `/api/foods/barcode/{code}` | product by barcode: own foods → catalog → Open Food Facts (imported on first use) |
+| GET | `/api/foods/{id}` · `/recent` · `/favorites` · `/mine` | food details with servings; recently logged; favorites; own foods and recipes |
+| PUT/DELETE | `/api/foods/{id}/favorite` | add to / remove from favorites |
+| POST | `/api/foods` · `/api/foods/recipes` | create an own food (per 100 g, optional portion and barcode) or a recipe from ingredients |
+| DELETE | `/api/foods/{id}` | delete an own food or recipe |
 | DELETE | `/api/nutrition/entries/{id}` | delete a food item |
 | POST | `/api/nutrition/analyze` | photo (base64 JPEG) → dish, items with grams/kcal/macros. Nothing is saved until the user confirms |
 | GET | `/api/coach/messages` | AI coach chat history |
@@ -70,5 +79,7 @@ Troubleshooting:
 | DELETE | `/api/coach/messages` | clear the chat |
 
 Everything except register/login needs `Authorization: Bearer <token>`. Passwords are stored as BCrypt hashes, session tokens as SHA-256 (one row per device in `sessions`).
+
+Food data: ~150 common foods in Russian and English live in `backend/src/main/resources/foods/builtin.json` (loaded on startup), packaged products come from [Open Food Facts](https://world.openfoodfacts.org) (free, no key; search via search.openfoodfacts.org, barcodes via the product API). Nutrition is stored per 100 g with named portions.
 
 Calorie target: Mifflin-St Jeor BMR × activity (from training days per week) + goal adjustment (+300 kcal build muscle, +150 get stronger). Protein 1.8 g/kg, fat 27% of calories, carbs the rest. Users can set their own target instead.

@@ -60,10 +60,90 @@ export type FoodItem = {
   fatG?: number;
   carbsG?: number;
 };
+/** A catalog item to log: the server computes nutrition from foodId + grams. */
+export type CatalogItem = { foodId: string; grams: number; servingLabel?: string; servingsCount?: number };
+export type EntrySource = 'MANUAL' | 'PHOTO' | 'CATALOG';
 export type FoodEntry = Required<Pick<FoodItem, 'name' | 'kcal'>> &
-  FoodItem & { id: string; meal: Meal; source: 'MANUAL' | 'PHOTO' };
-export type Totals = { kcal: number; proteinG: number; fatG: number; carbsG: number };
-export type FoodDay = { date: string; targets?: Targets | null; totals: Totals; entries: FoodEntry[] };
+  FoodItem & {
+    id: string;
+    meal: Meal;
+    source: EntrySource;
+    foodId?: string;
+    servingLabel?: string;
+    servingsCount?: number;
+    fiberG?: number;
+    sugarG?: number;
+  };
+export type Totals = { kcal: number; proteinG: number; fatG: number; carbsG: number; fiberG?: number; sugarG?: number };
+export type FoodDay = {
+  date: string;
+  targets?: Targets | null;
+  totals: Totals;
+  entries: FoodEntry[];
+  waterMl: number;
+  waterTargetMl: number;
+};
+
+export type FoodSource = 'BUILTIN' | 'OFF' | 'CUSTOM' | 'RECIPE';
+export type Per100 = { kcal: number; proteinG: number; fatG: number; carbsG: number; fiberG?: number | null; sugarG?: number | null };
+export type Serving = { label: string; grams: number };
+export type Ingredient = { foodId: string; name: string; grams: number; kcal: number };
+/** id is missing for an Open Food Facts search result that isn't in the catalog yet: open it by barcode. */
+export type Food = {
+  id?: string;
+  source: FoodSource;
+  barcode?: string;
+  name: string;
+  brand?: string;
+  per100: Per100;
+  servings: Serving[];
+  favorite: boolean;
+  own: boolean;
+  ingredients?: Ingredient[];
+};
+export type FoodSearch = { local: Food[]; online?: Food[] | null };
+export type RecentFood = { food: Food; servingLabel?: string; grams?: number; servingsCount?: number };
+export type NewFood = {
+  name: string;
+  brand?: string;
+  barcode?: string;
+  kcal: number;
+  proteinG?: number;
+  fatG?: number;
+  carbsG?: number;
+  fiberG?: number;
+  sugarG?: number;
+  serving?: { label: string; grams: number };
+};
+export type ReportDay = {
+  date: string;
+  kcal: number;
+  proteinG: number;
+  fatG: number;
+  carbsG: number;
+  fiberG: number;
+  sugarG: number;
+  waterMl: number;
+  entries: number;
+};
+export type Report = {
+  days: number;
+  targets?: Targets | null;
+  byDay: ReportDay[];
+  loggedDays: number;
+  avgKcal: number;
+  avgProteinG: number;
+  avgFatG: number;
+  avgCarbsG: number;
+  avgFiberG: number;
+  avgSugarG: number;
+  avgWaterMl: number;
+  proteinPct: number;
+  fatPct: number;
+  carbsPct: number;
+  daysOnTarget: number;
+  topFoods: { name: string; kcal: number; times: number }[];
+};
 export type Analysis = {
   food: boolean;
   dish: string;
@@ -175,8 +255,54 @@ export const api = {
   foodDay: (token: string, date?: string) =>
     request<FoodDay>(`/api/nutrition/day${date ? `?date=${date}` : ''}`, { token }),
 
-  addFood: (token: string, body: { date?: string; meal: Meal; source?: 'MANUAL' | 'PHOTO'; items: FoodItem[] }) =>
-    request<FoodEntry[]>('/api/nutrition/entries', { method: 'POST', token, body: JSON.stringify(body) }),
+  addFood: (
+    token: string,
+    body: { date?: string; meal: Meal; source?: 'MANUAL' | 'PHOTO'; lang?: Lang; items: (FoodItem | CatalogItem)[] },
+  ) => request<FoodEntry[]>('/api/nutrition/entries', { method: 'POST', token, body: JSON.stringify(body) }),
+
+  copyMeal: (token: string, fromDate: string, fromMeal: Meal, toDate: string, toMeal: Meal) =>
+    request<FoodEntry[]>('/api/nutrition/copy', {
+      method: 'POST',
+      token,
+      body: JSON.stringify({ fromDate, fromMeal, toDate, toMeal }),
+    }),
+
+  addWater: (token: string, date: string, deltaMl: number) =>
+    request<{ date: string; ml: number; targetMl: number }>('/api/nutrition/water', {
+      method: 'POST',
+      token,
+      body: JSON.stringify({ date, deltaMl }),
+    }),
+
+  report: (token: string, days: 7 | 14 | 30) => request<Report>(`/api/nutrition/report?days=${days}`, { token }),
+
+  searchFoods: (token: string, q: string, lang: Lang, online = false) =>
+    request<FoodSearch>(`/api/foods/search?q=${encodeURIComponent(q)}&lang=${lang}&online=${online}`, { token }),
+
+  food: (token: string, id: string, lang: Lang) => request<Food>(`/api/foods/${id}?lang=${lang}`, { token }),
+
+  foodByBarcode: (token: string, code: string, lang: Lang) =>
+    request<Food>(`/api/foods/barcode/${encodeURIComponent(code)}?lang=${lang}`, { token }),
+
+  recentFoods: (token: string, lang: Lang) => request<RecentFood[]>(`/api/foods/recent?lang=${lang}`, { token }),
+
+  favoriteFoods: (token: string, lang: Lang) => request<Food[]>(`/api/foods/favorites?lang=${lang}`, { token }),
+
+  myFoods: (token: string, lang: Lang) => request<Food[]>(`/api/foods/mine?lang=${lang}`, { token }),
+
+  setFavorite: (token: string, id: string, on: boolean) =>
+    request<void>(`/api/foods/${id}/favorite`, { method: on ? 'PUT' : 'DELETE', token }),
+
+  createFood: (token: string, body: NewFood, lang: Lang) =>
+    request<Food>(`/api/foods?lang=${lang}`, { method: 'POST', token, body: JSON.stringify(body) }),
+
+  createRecipe: (
+    token: string,
+    body: { name: string; portions: number; ingredients: { foodId: string; grams: number }[] },
+    lang: Lang,
+  ) => request<Food>(`/api/foods/recipes?lang=${lang}`, { method: 'POST', token, body: JSON.stringify(body) }),
+
+  deleteCatalogFood: (token: string, id: string) => request<void>(`/api/foods/${id}`, { method: 'DELETE', token }),
 
   deleteFood: (token: string, id: string) =>
     request<void>(`/api/nutrition/entries/${id}`, { method: 'DELETE', token }),

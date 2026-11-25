@@ -14,4 +14,8 @@ public interface FoodEntryRepository extends JpaRepository<FoodEntry, UUID> {
     List<FoodEntry> findByUserIdAndEatenOnBetween(UUID userId, LocalDate from, LocalDate to);
 
     Optional<FoodEntry> findByIdAndUserId(UUID id, UUID userId);
+
+    List<FoodEntry> findTop200ByUserIdAndFoodIdIsNotNullOrderByCreatedAtDesc(UUID userId);
+
+    List<FoodEntry> findByUserIdAndEatenOnAndMealOrderByCreatedAtAsc(UUID userId, LocalDate day, FoodEntry.Meal meal);
 }

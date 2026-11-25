@@ -18,7 +18,8 @@ public class FoodEntry {
 
     public enum Meal { BREAKFAST, LUNCH, DINNER, SNACK }
 
-    public enum Source { MANUAL, PHOTO }
+    /** CATALOG = picked from the food catalog (search, barcode, recent, recipe). */
+    public enum Source { MANUAL, PHOTO, CATALOG }
 
     @Id
     private UUID id;
@@ -57,6 +58,21 @@ public class FoodEntry {
     @Column(nullable = false, length = 8)
     private Source source;
 
+    @Column(name = "food_id")
+    private UUID foodId;
+
+    @Column(name = "serving_label", length = 60)
+    private String servingLabel;
+
+    @Column(name = "servings_count", precision = 6, scale = 2)
+    private BigDecimal servingsCount;
+
+    @Column(name = "fiber_g", precision = 6, scale = 1)
+    private BigDecimal fiberG;
+
+    @Column(name = "sugar_g", precision = 6, scale = 1)
+    private BigDecimal sugarG;
+
     protected FoodEntry() {}
 
     public FoodEntry(UUID id, UUID userId, LocalDate eatenOn, Instant createdAt, Meal meal, String name,
@@ -87,4 +103,21 @@ public class FoodEntry {
     public BigDecimal getFatG() { return fatG; }
     public BigDecimal getCarbsG() { return carbsG; }
     public Source getSource() { return source; }
+    public UUID getFoodId() { return foodId; }
+    public String getServingLabel() { return servingLabel; }
+    public BigDecimal getServingsCount() { return servingsCount; }
+    public BigDecimal getFiberG() { return fiberG; }
+    public BigDecimal getSugarG() { return sugarG; }
+
+    /** Remembers which catalog food and portion this entry came from. */
+    public void linkFood(UUID foodId, String servingLabel, BigDecimal servingsCount) {
+        this.foodId = foodId;
+        this.servingLabel = servingLabel;
+        this.servingsCount = servingsCount;
+    }
+
+    public void setExtras(BigDecimal fiberG, BigDecimal sugarG) {
+        this.fiberG = fiberG;
+        this.sugarG = sugarG;
+    }
 }

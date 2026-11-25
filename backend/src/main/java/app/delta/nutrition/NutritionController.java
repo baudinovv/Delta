@@ -3,6 +3,10 @@ package app.delta.nutrition;
 import app.delta.common.AuthInterceptor;
 import app.delta.nutrition.NutritionDtos.AnalyzeRequest;
 import app.delta.nutrition.NutritionDtos.Analysis;
+import app.delta.nutrition.NutritionDtos.CopyMeal;
+import app.delta.nutrition.NutritionDtos.Report;
+import app.delta.nutrition.NutritionDtos.Water;
+import app.delta.nutrition.NutritionDtos.WaterStatus;
 import app.delta.nutrition.NutritionDtos.Day;
 import app.delta.nutrition.NutritionDtos.Entry;
 import app.delta.nutrition.NutritionDtos.NewEntries;
@@ -53,6 +57,26 @@ public class NutritionController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestAttribute(AuthInterceptor.USER_ID) UUID userId, @PathVariable UUID id) {
         nutrition.delete(userId, id);
+    }
+
+    /** Copies one meal (e.g. yesterday's breakfast) into another day/meal. */
+    @PostMapping("/copy")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<Entry> copy(@RequestAttribute(AuthInterceptor.USER_ID) UUID userId, @Valid @RequestBody CopyMeal body) {
+        return nutrition.copy(userId, body);
+    }
+
+    /** Adds (or with a negative delta removes) water for a day. */
+    @PostMapping("/water")
+    public WaterStatus water(@RequestAttribute(AuthInterceptor.USER_ID) UUID userId, @Valid @RequestBody Water body) {
+        return nutrition.addWater(userId, body.date(), body.deltaMl());
+    }
+
+    /** Per-day totals, averages and top foods for the last 7, 14 or 30 days. */
+    @GetMapping("/report")
+    public Report report(@RequestAttribute(AuthInterceptor.USER_ID) UUID userId,
+                         @RequestParam(defaultValue = "7") int days) {
+        return nutrition.report(userId, days);
     }
 
     /** Estimates a meal from a photo. Nothing is saved until the user confirms via POST /entries. */

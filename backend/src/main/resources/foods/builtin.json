@@ -1,0 +1,2979 @@
+[
+ {
+  "key": "buckwheat-boiled",
+  "ru": "Гречка отварная",
+  "en": "Buckwheat, boiled",
+  "kcal": 110,
+  "p": 4.2,
+  "f": 1.1,
+  "c": 21.3,
+  "fiber": 2.7,
+  "sugar": 0.9,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 200
+   },
+   {
+    "ru": "1 тарелка",
+    "en": "1 plate",
+    "g": 250
+   },
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 15
+   }
+  ]
+ },
+ {
+  "key": "rice-white-boiled",
+  "ru": "Рис белый отварной",
+  "en": "White rice, boiled",
+  "kcal": 130,
+  "p": 2.7,
+  "f": 0.3,
+  "c": 28.2,
+  "fiber": 0.4,
+  "sugar": 0.1,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 180
+   },
+   {
+    "ru": "1 тарелка",
+    "en": "1 plate",
+    "g": 250
+   },
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 15
+   }
+  ]
+ },
+ {
+  "key": "rice-brown-boiled",
+  "ru": "Рис бурый отварной",
+  "en": "Brown rice, boiled",
+  "kcal": 112,
+  "p": 2.3,
+  "f": 0.8,
+  "c": 23.5,
+  "fiber": 1.8,
+  "sugar": 0.4,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 180
+   },
+   {
+    "ru": "1 тарелка",
+    "en": "1 plate",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "oatmeal-water",
+  "ru": "Овсянка на воде",
+  "en": "Oatmeal, cooked with water",
+  "kcal": 71,
+  "p": 2.5,
+  "f": 1.5,
+  "c": 12.0,
+  "fiber": 1.7,
+  "sugar": 0.3,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 250
+   },
+   {
+    "ru": "1 миска",
+    "en": "1 bowl",
+    "g": 300
+   }
+  ]
+ },
+ {
+  "key": "oatmeal-milk",
+  "ru": "Овсянка на молоке",
+  "en": "Oatmeal, cooked with milk",
+  "kcal": 102,
+  "p": 3.6,
+  "f": 3.2,
+  "c": 14.2,
+  "fiber": 1.4,
+  "sugar": 4.0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 250
+   },
+   {
+    "ru": "1 миска",
+    "en": "1 bowl",
+    "g": 300
+   }
+  ]
+ },
+ {
+  "key": "oats-dry",
+  "ru": "Овсяные хлопья (сухие)",
+  "en": "Rolled oats, dry",
+  "kcal": 379,
+  "p": 13.2,
+  "f": 6.5,
+  "c": 67.7,
+  "fiber": 10.1,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 50
+   },
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 15
+   }
+  ]
+ },
+ {
+  "key": "pasta-boiled",
+  "ru": "Макароны отварные",
+  "en": "Pasta, boiled",
+  "kcal": 158,
+  "p": 5.8,
+  "f": 0.9,
+  "c": 30.9,
+  "fiber": 1.8,
+  "sugar": 0.6,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 200
+   },
+   {
+    "ru": "1 тарелка",
+    "en": "1 plate",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "bulgur-boiled",
+  "ru": "Булгур отварной",
+  "en": "Bulgur, boiled",
+  "kcal": 83,
+  "p": 3.1,
+  "f": 0.2,
+  "c": 18.6,
+  "fiber": 4.5,
+  "sugar": 0.1,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 180
+   },
+   {
+    "ru": "1 тарелка",
+    "en": "1 plate",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "quinoa-boiled",
+  "ru": "Киноа отварная",
+  "en": "Quinoa, cooked",
+  "kcal": 120,
+  "p": 4.4,
+  "f": 1.9,
+  "c": 21.3,
+  "fiber": 2.8,
+  "sugar": 0.9,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 180
+   }
+  ]
+ },
+ {
+  "key": "millet-boiled",
+  "ru": "Пшено отварное",
+  "en": "Millet porridge",
+  "kcal": 119,
+  "p": 3.5,
+  "f": 1.0,
+  "c": 23.7,
+  "fiber": 1.3,
+  "sugar": 0.1,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 200
+   },
+   {
+    "ru": "1 тарелка",
+    "en": "1 plate",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "semolina-milk",
+  "ru": "Манная каша на молоке",
+  "en": "Semolina porridge with milk",
+  "kcal": 98,
+  "p": 3.0,
+  "f": 3.2,
+  "c": 15.3,
+  "fiber": 0.2,
+  "sugar": 5.0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 250
+   },
+   {
+    "ru": "1 миска",
+    "en": "1 bowl",
+    "g": 300
+   }
+  ]
+ },
+ {
+  "key": "potato-boiled",
+  "ru": "Картофель отварной",
+  "en": "Potatoes, boiled",
+  "kcal": 82,
+  "p": 2.0,
+  "f": 0.1,
+  "c": 18.0,
+  "fiber": 1.8,
+  "sugar": 0.9,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 100
+   },
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "potato-mashed",
+  "ru": "Картофельное пюре",
+  "en": "Mashed potatoes",
+  "kcal": 106,
+  "p": 2.2,
+  "f": 4.0,
+  "c": 15.0,
+  "fiber": 1.5,
+  "sugar": 1.3,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 200
+   },
+   {
+    "ru": "1 тарелка",
+    "en": "1 plate",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "potato-fried",
+  "ru": "Картофель жареный",
+  "en": "Fried potatoes",
+  "kcal": 192,
+  "p": 2.8,
+  "f": 9.5,
+  "c": 23.4,
+  "fiber": 2.3,
+  "sugar": 0.5,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "french-fries",
+  "ru": "Картофель фри",
+  "en": "French fries",
+  "kcal": 312,
+  "p": 3.4,
+  "f": 15.0,
+  "c": 41.0,
+  "fiber": 3.8,
+  "sugar": 0.3,
+  "servings": [
+   {
+    "ru": "Маленькая",
+    "en": "Small",
+    "g": 80
+   },
+   {
+    "ru": "Средняя",
+    "en": "Medium",
+    "g": 117
+   },
+   {
+    "ru": "Большая",
+    "en": "Large",
+    "g": 154
+   }
+  ]
+ },
+ {
+  "key": "bread-white",
+  "ru": "Хлеб белый",
+  "en": "White bread",
+  "kcal": 265,
+  "p": 8.9,
+  "f": 3.2,
+  "c": 49.0,
+  "fiber": 2.7,
+  "sugar": 5.0,
+  "servings": [
+   {
+    "ru": "1 ломтик",
+    "en": "1 slice",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "bread-rye",
+  "ru": "Хлеб ржаной",
+  "en": "Rye bread",
+  "kcal": 259,
+  "p": 8.5,
+  "f": 3.3,
+  "c": 48.3,
+  "fiber": 5.8,
+  "sugar": 3.9,
+  "servings": [
+   {
+    "ru": "1 ломтик",
+    "en": "1 slice",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "bread-wholegrain",
+  "ru": "Хлеб цельнозерновой",
+  "en": "Whole-grain bread",
+  "kcal": 247,
+  "p": 13.0,
+  "f": 3.4,
+  "c": 41.0,
+  "fiber": 7.0,
+  "sugar": 6.0,
+  "servings": [
+   {
+    "ru": "1 ломтик",
+    "en": "1 slice",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "lavash",
+  "ru": "Лаваш",
+  "en": "Lavash flatbread",
+  "kcal": 277,
+  "p": 9.1,
+  "f": 1.0,
+  "c": 56.1,
+  "fiber": 2.2,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "key": "lepeshka",
+  "ru": "Лепёшка (нан)",
+  "en": "Flatbread (non)",
+  "kcal": 290,
+  "p": 9.0,
+  "f": 3.5,
+  "c": 55.0,
+  "fiber": 2.5,
+  "sugar": 2.5,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 200
+   },
+   {
+    "ru": "1/4 лепёшки",
+    "en": "1/4 flatbread",
+    "g": 50
+   }
+  ]
+ },
+ {
+  "key": "baursak",
+  "ru": "Баурсаки",
+  "en": "Baursak (fried dough)",
+  "kcal": 390,
+  "p": 7.5,
+  "f": 18.0,
+  "c": 49.0,
+  "fiber": 1.5,
+  "sugar": 6.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 25
+   }
+  ]
+ },
+ {
+  "key": "crispbread",
+  "ru": "Хлебцы",
+  "en": "Crispbread",
+  "kcal": 360,
+  "p": 11.0,
+  "f": 2.5,
+  "c": 72.0,
+  "fiber": 14.0,
+  "sugar": 2.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 10
+   }
+  ]
+ },
+ {
+  "key": "chicken-breast-cooked",
+  "ru": "Куриная грудка отварная",
+  "en": "Chicken breast, cooked",
+  "kcal": 165,
+  "p": 31.0,
+  "f": 3.6,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   },
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "chicken-breast-grilled",
+  "ru": "Куриная грудка на гриле",
+  "en": "Chicken breast, grilled",
+  "kcal": 151,
+  "p": 30.5,
+  "f": 3.2,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "chicken-thigh",
+  "ru": "Куриное бедро запечённое",
+  "en": "Chicken thigh, roasted",
+  "kcal": 209,
+  "p": 26.0,
+  "f": 10.9,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 110
+   }
+  ]
+ },
+ {
+  "key": "chicken-leg",
+  "ru": "Куриная ножка (голень)",
+  "en": "Chicken drumstick, roasted",
+  "kcal": 172,
+  "p": 28.3,
+  "f": 5.7,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 75
+   }
+  ]
+ },
+ {
+  "key": "turkey-breast",
+  "ru": "Индейка, филе",
+  "en": "Turkey breast, cooked",
+  "kcal": 135,
+  "p": 29.0,
+  "f": 1.5,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "beef-boiled",
+  "ru": "Говядина отварная",
+  "en": "Beef, boiled",
+  "kcal": 254,
+  "p": 25.8,
+  "f": 16.8,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "beef-steak",
+  "ru": "Стейк говяжий",
+  "en": "Beef steak",
+  "kcal": 271,
+  "p": 25.0,
+  "f": 19.0,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "beef-mince",
+  "ru": "Говяжий фарш (жареный)",
+  "en": "Ground beef, cooked",
+  "kcal": 250,
+  "p": 26.0,
+  "f": 15.0,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "key": "lamb-boiled",
+  "ru": "Баранина отварная",
+  "en": "Lamb, cooked",
+  "kcal": 294,
+  "p": 25.6,
+  "f": 20.9,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "horse-meat",
+  "ru": "Конина отварная",
+  "en": "Horse meat, cooked",
+  "kcal": 175,
+  "p": 28.0,
+  "f": 6.0,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "kazy",
+  "ru": "Казы",
+  "en": "Kazy (horse sausage)",
+  "kcal": 385,
+  "p": 14.0,
+  "f": 36.0,
+  "c": 0.5,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 ломтик",
+    "en": "1 slice",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "pork-loin",
+  "ru": "Свинина, корейка",
+  "en": "Pork loin, cooked",
+  "kcal": 242,
+  "p": 27.0,
+  "f": 14.0,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "cutlet",
+  "ru": "Котлета",
+  "en": "Meat cutlet",
+  "kcal": 260,
+  "p": 15.0,
+  "f": 18.0,
+  "c": 10.0,
+  "fiber": 0.5,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 80
+   }
+  ]
+ },
+ {
+  "key": "chicken-cutlet",
+  "ru": "Котлета куриная",
+  "en": "Chicken cutlet",
+  "kcal": 190,
+  "p": 18.0,
+  "f": 10.0,
+  "c": 7.0,
+  "fiber": 0.3,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 80
+   }
+  ]
+ },
+ {
+  "key": "sausage-boiled",
+  "ru": "Колбаса варёная",
+  "en": "Bologna sausage",
+  "kcal": 257,
+  "p": 12.8,
+  "f": 22.2,
+  "c": 1.5,
+  "fiber": 0,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 ломтик",
+    "en": "1 slice",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "sausages",
+  "ru": "Сосиски",
+  "en": "Frankfurters",
+  "kcal": 266,
+  "p": 11.0,
+  "f": 24.0,
+  "c": 1.6,
+  "fiber": 0,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 50
+   }
+  ]
+ },
+ {
+  "key": "ham",
+  "ru": "Ветчина",
+  "en": "Ham",
+  "kcal": 145,
+  "p": 21.0,
+  "f": 6.0,
+  "c": 1.5,
+  "fiber": 0,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 ломтик",
+    "en": "1 slice",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "salmon",
+  "ru": "Лосось запечённый",
+  "en": "Salmon, baked",
+  "kcal": 206,
+  "p": 22.0,
+  "f": 12.4,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "cod",
+  "ru": "Треска отварная",
+  "en": "Cod, cooked",
+  "kcal": 105,
+  "p": 23.0,
+  "f": 0.9,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "tuna-canned",
+  "ru": "Тунец консервированный в с/с",
+  "en": "Tuna, canned in water",
+  "kcal": 116,
+  "p": 25.5,
+  "f": 0.8,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 банка",
+    "en": "1 can",
+    "g": 140
+   }
+  ]
+ },
+ {
+  "key": "shrimp",
+  "ru": "Креветки отварные",
+  "en": "Shrimp, cooked",
+  "kcal": 99,
+  "p": 24.0,
+  "f": 0.3,
+  "c": 0.2,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "key": "herring",
+  "ru": "Сельдь солёная",
+  "en": "Salted herring",
+  "kcal": 217,
+  "p": 19.8,
+  "f": 15.4,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 70
+   }
+  ]
+ },
+ {
+  "key": "egg-boiled",
+  "ru": "Яйцо варёное",
+  "en": "Egg, boiled",
+  "kcal": 155,
+  "p": 12.6,
+  "f": 10.6,
+  "c": 1.1,
+  "fiber": 0,
+  "sugar": 1.1,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 50
+   }
+  ]
+ },
+ {
+  "key": "egg-fried",
+  "ru": "Яичница",
+  "en": "Fried egg",
+  "kcal": 196,
+  "p": 13.6,
+  "f": 15.0,
+  "c": 0.8,
+  "fiber": 0,
+  "sugar": 0.4,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 46
+   }
+  ]
+ },
+ {
+  "key": "omelette",
+  "ru": "Омлет",
+  "en": "Omelette",
+  "kcal": 154,
+  "p": 10.6,
+  "f": 11.7,
+  "c": 1.6,
+  "fiber": 0,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "Из 2 яиц",
+    "en": "2-egg",
+    "g": 120
+   },
+   {
+    "ru": "Из 3 яиц",
+    "en": "3-egg",
+    "g": 180
+   }
+  ]
+ },
+ {
+  "key": "egg-white",
+  "ru": "Яичный белок",
+  "en": "Egg white",
+  "kcal": 52,
+  "p": 10.9,
+  "f": 0.2,
+  "c": 0.7,
+  "fiber": 0,
+  "sugar": 0.7,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 33
+   }
+  ]
+ },
+ {
+  "key": "milk-25",
+  "ru": "Молоко 2,5%",
+  "en": "Milk 2.5%",
+  "kcal": 52,
+  "p": 2.8,
+  "f": 2.5,
+  "c": 4.7,
+  "fiber": 0,
+  "sugar": 4.7,
+  "servings": [
+   {
+    "ru": "1 стакан",
+    "en": "1 glass",
+    "g": 250
+   },
+   {
+    "ru": "1 чашка",
+    "en": "1 cup",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "milk-32",
+  "ru": "Молоко 3,2%",
+  "en": "Milk 3.2%",
+  "kcal": 60,
+  "p": 2.9,
+  "f": 3.2,
+  "c": 4.7,
+  "fiber": 0,
+  "sugar": 4.7,
+  "servings": [
+   {
+    "ru": "1 стакан",
+    "en": "1 glass",
+    "g": 250
+   },
+   {
+    "ru": "1 чашка",
+    "en": "1 cup",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "kefir-1",
+  "ru": "Кефир 1%",
+  "en": "Kefir 1%",
+  "kcal": 40,
+  "p": 3.0,
+  "f": 1.0,
+  "c": 4.0,
+  "fiber": 0,
+  "sugar": 4.0,
+  "servings": [
+   {
+    "ru": "1 стакан",
+    "en": "1 glass",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "kefir-25",
+  "ru": "Кефир 2,5%",
+  "en": "Kefir 2.5%",
+  "kcal": 53,
+  "p": 3.0,
+  "f": 2.5,
+  "c": 4.0,
+  "fiber": 0,
+  "sugar": 4.0,
+  "servings": [
+   {
+    "ru": "1 стакан",
+    "en": "1 glass",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "ayran",
+  "ru": "Айран",
+  "en": "Ayran",
+  "kcal": 28,
+  "p": 1.7,
+  "f": 1.5,
+  "c": 1.8,
+  "fiber": 0,
+  "sugar": 1.8,
+  "servings": [
+   {
+    "ru": "1 стакан",
+    "en": "1 glass",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "kumys",
+  "ru": "Кумыс",
+  "en": "Kumis (mare's milk)",
+  "kcal": 50,
+  "p": 2.1,
+  "f": 1.9,
+  "c": 5.0,
+  "fiber": 0,
+  "sugar": 5.0,
+  "servings": [
+   {
+    "ru": "1 стакан",
+    "en": "1 glass",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "tvorog-0",
+  "ru": "Творог 0%",
+  "en": "Cottage cheese 0%",
+  "kcal": 71,
+  "p": 16.5,
+  "f": 0.2,
+  "c": 1.3,
+  "fiber": 0,
+  "sugar": 1.3,
+  "servings": [
+   {
+    "ru": "1 пачка",
+    "en": "1 pack",
+    "g": 180
+   },
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "key": "tvorog-5",
+  "ru": "Творог 5%",
+  "en": "Cottage cheese 5%",
+  "kcal": 121,
+  "p": 17.2,
+  "f": 5.0,
+  "c": 1.8,
+  "fiber": 0,
+  "sugar": 1.8,
+  "servings": [
+   {
+    "ru": "1 пачка",
+    "en": "1 pack",
+    "g": 180
+   },
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "key": "tvorog-9",
+  "ru": "Творог 9%",
+  "en": "Cottage cheese 9%",
+  "kcal": 159,
+  "p": 16.7,
+  "f": 9.0,
+  "c": 2.0,
+  "fiber": 0,
+  "sugar": 2.0,
+  "servings": [
+   {
+    "ru": "1 пачка",
+    "en": "1 pack",
+    "g": 180
+   }
+  ]
+ },
+ {
+  "key": "greek-yogurt",
+  "ru": "Йогурт греческий 2%",
+  "en": "Greek yogurt 2%",
+  "kcal": 73,
+  "p": 9.9,
+  "f": 2.0,
+  "c": 3.9,
+  "fiber": 0,
+  "sugar": 3.6,
+  "servings": [
+   {
+    "ru": "1 баночка",
+    "en": "1 cup",
+    "g": 140
+   }
+  ]
+ },
+ {
+  "key": "yogurt-fruit",
+  "ru": "Йогурт фруктовый",
+  "en": "Fruit yogurt",
+  "kcal": 95,
+  "p": 3.0,
+  "f": 2.5,
+  "c": 15.0,
+  "fiber": 0,
+  "sugar": 13.0,
+  "servings": [
+   {
+    "ru": "1 баночка",
+    "en": "1 cup",
+    "g": 125
+   }
+  ]
+ },
+ {
+  "key": "sour-cream-15",
+  "ru": "Сметана 15%",
+  "en": "Sour cream 15%",
+  "kcal": 158,
+  "p": 2.6,
+  "f": 15.0,
+  "c": 3.0,
+  "fiber": 0,
+  "sugar": 3.0,
+  "servings": [
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 15
+   }
+  ]
+ },
+ {
+  "key": "cheese-hard",
+  "ru": "Сыр твёрдый",
+  "en": "Hard cheese",
+  "kcal": 364,
+  "p": 26.0,
+  "f": 27.0,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 ломтик",
+    "en": "1 slice",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "mozzarella",
+  "ru": "Моцарелла",
+  "en": "Mozzarella",
+  "kcal": 280,
+  "p": 22.0,
+  "f": 21.0,
+  "c": 2.2,
+  "fiber": 0,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "feta",
+  "ru": "Брынза / фета",
+  "en": "Feta cheese",
+  "kcal": 264,
+  "p": 14.2,
+  "f": 21.3,
+  "c": 4.1,
+  "fiber": 0,
+  "sugar": 4.1,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "syrniki",
+  "ru": "Сырники",
+  "en": "Syrniki (cottage cheese pancakes)",
+  "kcal": 220,
+  "p": 14.0,
+  "f": 10.0,
+  "c": 18.0,
+  "fiber": 0.5,
+  "sugar": 8.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 60
+   }
+  ]
+ },
+ {
+  "key": "butter",
+  "ru": "Масло сливочное 82%",
+  "en": "Butter 82%",
+  "kcal": 748,
+  "p": 0.5,
+  "f": 82.5,
+  "c": 0.8,
+  "fiber": 0,
+  "sugar": 0.8,
+  "servings": [
+   {
+    "ru": "1 ч. ложка",
+    "en": "1 tsp",
+    "g": 5
+   },
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 15
+   }
+  ]
+ },
+ {
+  "key": "kurt",
+  "ru": "Курт",
+  "en": "Kurt (dried cheese)",
+  "kcal": 380,
+  "p": 45.0,
+  "f": 15.0,
+  "c": 14.0,
+  "fiber": 0,
+  "sugar": 4.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 10
+   }
+  ]
+ },
+ {
+  "key": "cucumber",
+  "ru": "Огурец",
+  "en": "Cucumber",
+  "kcal": 15,
+  "p": 0.7,
+  "f": 0.1,
+  "c": 3.6,
+  "fiber": 0.5,
+  "sugar": 1.7,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 120
+   }
+  ]
+ },
+ {
+  "key": "tomato",
+  "ru": "Помидор",
+  "en": "Tomato",
+  "kcal": 18,
+  "p": 0.9,
+  "f": 0.2,
+  "c": 3.9,
+  "fiber": 1.2,
+  "sugar": 2.6,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 120
+   }
+  ]
+ },
+ {
+  "key": "salad-veg",
+  "ru": "Салат из свежих овощей",
+  "en": "Fresh vegetable salad",
+  "kcal": 45,
+  "p": 1.0,
+  "f": 3.0,
+  "c": 4.0,
+  "fiber": 1.3,
+  "sugar": 2.5,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "salad-veg-oil",
+  "ru": "Салат овощной с маслом",
+  "en": "Vegetable salad with oil",
+  "kcal": 90,
+  "p": 1.0,
+  "f": 7.5,
+  "c": 4.0,
+  "fiber": 1.3,
+  "sugar": 2.5,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "carrot",
+  "ru": "Морковь",
+  "en": "Carrot",
+  "kcal": 41,
+  "p": 0.9,
+  "f": 0.2,
+  "c": 9.6,
+  "fiber": 2.8,
+  "sugar": 4.7,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 80
+   }
+  ]
+ },
+ {
+  "key": "cabbage",
+  "ru": "Капуста белокочанная",
+  "en": "White cabbage",
+  "kcal": 25,
+  "p": 1.3,
+  "f": 0.1,
+  "c": 5.8,
+  "fiber": 2.5,
+  "sugar": 3.2,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "key": "broccoli",
+  "ru": "Брокколи отварная",
+  "en": "Broccoli, boiled",
+  "kcal": 35,
+  "p": 2.4,
+  "f": 0.4,
+  "c": 7.2,
+  "fiber": 3.3,
+  "sugar": 1.4,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "bell-pepper",
+  "ru": "Перец болгарский",
+  "en": "Bell pepper",
+  "kcal": 26,
+  "p": 1.0,
+  "f": 0.3,
+  "c": 6.0,
+  "fiber": 2.1,
+  "sugar": 4.2,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "onion",
+  "ru": "Лук репчатый",
+  "en": "Onion",
+  "kcal": 40,
+  "p": 1.1,
+  "f": 0.1,
+  "c": 9.3,
+  "fiber": 1.7,
+  "sugar": 4.2,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 80
+   }
+  ]
+ },
+ {
+  "key": "zucchini",
+  "ru": "Кабачок тушёный",
+  "en": "Zucchini, stewed",
+  "kcal": 24,
+  "p": 0.6,
+  "f": 0.3,
+  "c": 4.6,
+  "fiber": 1.0,
+  "sugar": 2.5,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "eggplant",
+  "ru": "Баклажан запечённый",
+  "en": "Eggplant, baked",
+  "kcal": 35,
+  "p": 0.8,
+  "f": 0.2,
+  "c": 8.7,
+  "fiber": 2.5,
+  "sugar": 3.2,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "beetroot",
+  "ru": "Свёкла отварная",
+  "en": "Beetroot, boiled",
+  "kcal": 44,
+  "p": 1.7,
+  "f": 0.2,
+  "c": 10.0,
+  "fiber": 2.0,
+  "sugar": 8.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "key": "corn",
+  "ru": "Кукуруза консервированная",
+  "en": "Canned sweet corn",
+  "kcal": 79,
+  "p": 2.4,
+  "f": 1.2,
+  "c": 16.0,
+  "fiber": 2.0,
+  "sugar": 4.5,
+  "servings": [
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 15
+   },
+   {
+    "ru": "1 банка",
+    "en": "1 can",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "green-peas",
+  "ru": "Горошек зелёный",
+  "en": "Green peas",
+  "kcal": 81,
+  "p": 5.4,
+  "f": 0.4,
+  "c": 14.5,
+  "fiber": 5.1,
+  "sugar": 5.7,
+  "servings": [
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 15
+   },
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "key": "mushrooms",
+  "ru": "Грибы шампиньоны жареные",
+  "en": "Mushrooms, sautéed",
+  "kcal": 80,
+  "p": 3.6,
+  "f": 6.0,
+  "c": 3.3,
+  "fiber": 1.5,
+  "sugar": 2.0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "key": "avocado",
+  "ru": "Авокадо",
+  "en": "Avocado",
+  "kcal": 160,
+  "p": 2.0,
+  "f": 14.7,
+  "c": 8.5,
+  "fiber": 6.7,
+  "sugar": 0.7,
+  "servings": [
+   {
+    "ru": "1/2 авокадо",
+    "en": "1/2 avocado",
+    "g": 70
+   },
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 140
+   }
+  ]
+ },
+ {
+  "key": "apple",
+  "ru": "Яблоко",
+  "en": "Apple",
+  "kcal": 52,
+  "p": 0.3,
+  "f": 0.2,
+  "c": 13.8,
+  "fiber": 2.4,
+  "sugar": 10.4,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 180
+   }
+  ]
+ },
+ {
+  "key": "banana",
+  "ru": "Банан",
+  "en": "Banana",
+  "kcal": 89,
+  "p": 1.1,
+  "f": 0.3,
+  "c": 22.8,
+  "fiber": 2.6,
+  "sugar": 12.2,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 120
+   }
+  ]
+ },
+ {
+  "key": "orange",
+  "ru": "Апельсин",
+  "en": "Orange",
+  "kcal": 47,
+  "p": 0.9,
+  "f": 0.1,
+  "c": 11.8,
+  "fiber": 2.4,
+  "sugar": 9.4,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "mandarin",
+  "ru": "Мандарин",
+  "en": "Tangerine",
+  "kcal": 53,
+  "p": 0.8,
+  "f": 0.3,
+  "c": 13.3,
+  "fiber": 1.8,
+  "sugar": 10.6,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 80
+   }
+  ]
+ },
+ {
+  "key": "pear",
+  "ru": "Груша",
+  "en": "Pear",
+  "kcal": 57,
+  "p": 0.4,
+  "f": 0.1,
+  "c": 15.2,
+  "fiber": 3.1,
+  "sugar": 9.8,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 170
+   }
+  ]
+ },
+ {
+  "key": "grapes",
+  "ru": "Виноград",
+  "en": "Grapes",
+  "kcal": 69,
+  "p": 0.7,
+  "f": 0.2,
+  "c": 18.1,
+  "fiber": 0.9,
+  "sugar": 15.5,
+  "servings": [
+   {
+    "ru": "1 гроздь",
+    "en": "1 bunch",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "watermelon",
+  "ru": "Арбуз",
+  "en": "Watermelon",
+  "kcal": 30,
+  "p": 0.6,
+  "f": 0.2,
+  "c": 7.6,
+  "fiber": 0.4,
+  "sugar": 6.2,
+  "servings": [
+   {
+    "ru": "1 ломтик",
+    "en": "1 slice",
+    "g": 300
+   }
+  ]
+ },
+ {
+  "key": "melon",
+  "ru": "Дыня",
+  "en": "Melon",
+  "kcal": 34,
+  "p": 0.8,
+  "f": 0.2,
+  "c": 8.2,
+  "fiber": 0.9,
+  "sugar": 7.9,
+  "servings": [
+   {
+    "ru": "1 ломтик",
+    "en": "1 slice",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "strawberry",
+  "ru": "Клубника",
+  "en": "Strawberries",
+  "kcal": 32,
+  "p": 0.7,
+  "f": 0.3,
+  "c": 7.7,
+  "fiber": 2.0,
+  "sugar": 4.9,
+  "servings": [
+   {
+    "ru": "1 чашка",
+    "en": "1 cup",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "kiwi",
+  "ru": "Киви",
+  "en": "Kiwi",
+  "kcal": 61,
+  "p": 1.1,
+  "f": 0.5,
+  "c": 14.7,
+  "fiber": 3.0,
+  "sugar": 9.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 75
+   }
+  ]
+ },
+ {
+  "key": "peach",
+  "ru": "Персик",
+  "en": "Peach",
+  "kcal": 39,
+  "p": 0.9,
+  "f": 0.3,
+  "c": 9.5,
+  "fiber": 1.5,
+  "sugar": 8.4,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "apricot",
+  "ru": "Абрикос",
+  "en": "Apricot",
+  "kcal": 48,
+  "p": 1.4,
+  "f": 0.4,
+  "c": 11.1,
+  "fiber": 2.0,
+  "sugar": 9.2,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 35
+   }
+  ]
+ },
+ {
+  "key": "pomegranate",
+  "ru": "Гранат",
+  "en": "Pomegranate",
+  "kcal": 83,
+  "p": 1.7,
+  "f": 1.2,
+  "c": 18.7,
+  "fiber": 4.0,
+  "sugar": 13.7,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "persimmon",
+  "ru": "Хурма",
+  "en": "Persimmon",
+  "kcal": 70,
+  "p": 0.6,
+  "f": 0.2,
+  "c": 18.6,
+  "fiber": 3.6,
+  "sugar": 12.5,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 170
+   }
+  ]
+ },
+ {
+  "key": "dates",
+  "ru": "Финики",
+  "en": "Dates",
+  "kcal": 282,
+  "p": 2.5,
+  "f": 0.4,
+  "c": 75.0,
+  "fiber": 8.0,
+  "sugar": 63.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 8
+   }
+  ]
+ },
+ {
+  "key": "raisins",
+  "ru": "Изюм",
+  "en": "Raisins",
+  "kcal": 299,
+  "p": 3.1,
+  "f": 0.5,
+  "c": 79.2,
+  "fiber": 3.7,
+  "sugar": 59.2,
+  "servings": [
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 15
+   }
+  ]
+ },
+ {
+  "key": "dried-apricots",
+  "ru": "Курага",
+  "en": "Dried apricots",
+  "kcal": 241,
+  "p": 3.4,
+  "f": 0.5,
+  "c": 62.6,
+  "fiber": 7.3,
+  "sugar": 53.4,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 8
+   }
+  ]
+ },
+ {
+  "key": "walnuts",
+  "ru": "Грецкие орехи",
+  "en": "Walnuts",
+  "kcal": 654,
+  "p": 15.2,
+  "f": 65.2,
+  "c": 13.7,
+  "fiber": 6.7,
+  "sugar": 2.6,
+  "servings": [
+   {
+    "ru": "Горсть",
+    "en": "Handful",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "almonds",
+  "ru": "Миндаль",
+  "en": "Almonds",
+  "kcal": 579,
+  "p": 21.2,
+  "f": 49.9,
+  "c": 21.6,
+  "fiber": 12.5,
+  "sugar": 4.4,
+  "servings": [
+   {
+    "ru": "Горсть",
+    "en": "Handful",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "peanuts",
+  "ru": "Арахис",
+  "en": "Peanuts",
+  "kcal": 567,
+  "p": 25.8,
+  "f": 49.2,
+  "c": 16.1,
+  "fiber": 8.5,
+  "sugar": 4.7,
+  "servings": [
+   {
+    "ru": "Горсть",
+    "en": "Handful",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "peanut-butter",
+  "ru": "Арахисовая паста",
+  "en": "Peanut butter",
+  "kcal": 588,
+  "p": 25.0,
+  "f": 50.0,
+  "c": 20.0,
+  "fiber": 6.0,
+  "sugar": 9.0,
+  "servings": [
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 15
+   }
+  ]
+ },
+ {
+  "key": "sunflower-seeds",
+  "ru": "Семечки подсолнечника",
+  "en": "Sunflower seeds",
+  "kcal": 584,
+  "p": 20.8,
+  "f": 51.5,
+  "c": 20.0,
+  "fiber": 8.6,
+  "sugar": 2.6,
+  "servings": [
+   {
+    "ru": "Горсть",
+    "en": "Handful",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "olive-oil",
+  "ru": "Масло оливковое",
+  "en": "Olive oil",
+  "kcal": 884,
+  "p": 0,
+  "f": 100,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 15
+   },
+   {
+    "ru": "1 ч. ложка",
+    "en": "1 tsp",
+    "g": 5
+   }
+  ]
+ },
+ {
+  "key": "sunflower-oil",
+  "ru": "Масло подсолнечное",
+  "en": "Sunflower oil",
+  "kcal": 899,
+  "p": 0,
+  "f": 99.9,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 15
+   },
+   {
+    "ru": "1 ч. ложка",
+    "en": "1 tsp",
+    "g": 5
+   }
+  ]
+ },
+ {
+  "key": "lentils-boiled",
+  "ru": "Чечевица отварная",
+  "en": "Lentils, boiled",
+  "kcal": 116,
+  "p": 9.0,
+  "f": 0.4,
+  "c": 20.1,
+  "fiber": 7.9,
+  "sugar": 1.8,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 180
+   }
+  ]
+ },
+ {
+  "key": "chickpeas-boiled",
+  "ru": "Нут отварной",
+  "en": "Chickpeas, boiled",
+  "kcal": 164,
+  "p": 8.9,
+  "f": 2.6,
+  "c": 27.4,
+  "fiber": 7.6,
+  "sugar": 4.8,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "beans-canned",
+  "ru": "Фасоль консервированная",
+  "en": "Canned beans",
+  "kcal": 91,
+  "p": 6.0,
+  "f": 0.4,
+  "c": 16.0,
+  "fiber": 5.5,
+  "sugar": 0.5,
+  "servings": [
+   {
+    "ru": "1 банка",
+    "en": "1 can",
+    "g": 240
+   },
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "key": "hummus",
+  "ru": "Хумус",
+  "en": "Hummus",
+  "kcal": 166,
+  "p": 7.9,
+  "f": 9.6,
+  "c": 14.3,
+  "fiber": 6.0,
+  "sugar": 0.3,
+  "servings": [
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "plov",
+  "ru": "Плов с говядиной",
+  "en": "Plov with beef",
+  "kcal": 190,
+  "p": 6.5,
+  "f": 9.0,
+  "c": 20.5,
+  "fiber": 1.0,
+  "sugar": 1.5,
+  "servings": [
+   {
+    "ru": "1 тарелка",
+    "en": "1 plate",
+    "g": 250
+   },
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 300
+   }
+  ]
+ },
+ {
+  "key": "plov-chicken",
+  "ru": "Плов с курицей",
+  "en": "Plov with chicken",
+  "kcal": 165,
+  "p": 8.0,
+  "f": 6.5,
+  "c": 19.0,
+  "fiber": 1.0,
+  "sugar": 1.5,
+  "servings": [
+   {
+    "ru": "1 тарелка",
+    "en": "1 plate",
+    "g": 250
+   },
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 300
+   }
+  ]
+ },
+ {
+  "key": "beshbarmak",
+  "ru": "Бешбармак",
+  "en": "Beshbarmak",
+  "kcal": 210,
+  "p": 12.0,
+  "f": 10.0,
+  "c": 17.0,
+  "fiber": 0.7,
+  "sugar": 0.5,
+  "servings": [
+   {
+    "ru": "1 тарелка",
+    "en": "1 plate",
+    "g": 250
+   },
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 350
+   }
+  ]
+ },
+ {
+  "key": "manty",
+  "ru": "Манты",
+  "en": "Manty (steamed dumplings)",
+  "kcal": 210,
+  "p": 9.5,
+  "f": 9.5,
+  "c": 21.0,
+  "fiber": 1.0,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 60
+   }
+  ]
+ },
+ {
+  "key": "pelmeni",
+  "ru": "Пельмени",
+  "en": "Pelmeni",
+  "kcal": 250,
+  "p": 11.0,
+  "f": 12.5,
+  "c": 23.5,
+  "fiber": 1.0,
+  "sugar": 0.5,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 250
+   },
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 12
+   }
+  ]
+ },
+ {
+  "key": "vareniki-potato",
+  "ru": "Вареники с картошкой",
+  "en": "Vareniki with potato",
+  "kcal": 150,
+  "p": 4.0,
+  "f": 3.5,
+  "c": 26.0,
+  "fiber": 1.5,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "lagman",
+  "ru": "Лагман",
+  "en": "Lagman (noodle soup)",
+  "kcal": 110,
+  "p": 6.0,
+  "f": 4.5,
+  "c": 11.5,
+  "fiber": 1.0,
+  "sugar": 1.5,
+  "servings": [
+   {
+    "ru": "1 миска",
+    "en": "1 bowl",
+    "g": 300
+   },
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 400
+   }
+  ]
+ },
+ {
+  "key": "samsa",
+  "ru": "Самса",
+  "en": "Samsa (meat pastry)",
+  "kcal": 330,
+  "p": 11.0,
+  "f": 18.0,
+  "c": 31.0,
+  "fiber": 1.5,
+  "sugar": 1.5,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 120
+   }
+  ]
+ },
+ {
+  "key": "chebureki",
+  "ru": "Чебурек",
+  "en": "Cheburek",
+  "kcal": 320,
+  "p": 10.0,
+  "f": 18.0,
+  "c": 29.0,
+  "fiber": 1.0,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 130
+   }
+  ]
+ },
+ {
+  "key": "shashlik-lamb",
+  "ru": "Шашлык из баранины",
+  "en": "Lamb shashlik",
+  "kcal": 255,
+  "p": 22.0,
+  "f": 18.0,
+  "c": 1.0,
+  "fiber": 0,
+  "sugar": 0.5,
+  "servings": [
+   {
+    "ru": "1 шампур",
+    "en": "1 skewer",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "shashlik-chicken",
+  "ru": "Шашлык из курицы",
+  "en": "Chicken shashlik",
+  "kcal": 170,
+  "p": 23.0,
+  "f": 8.0,
+  "c": 1.5,
+  "fiber": 0,
+  "sugar": 0.5,
+  "servings": [
+   {
+    "ru": "1 шампур",
+    "en": "1 skewer",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "shawarma",
+  "ru": "Шаурма",
+  "en": "Shawarma",
+  "kcal": 215,
+  "p": 11.0,
+  "f": 10.0,
+  "c": 20.0,
+  "fiber": 1.5,
+  "sugar": 2.5,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 350
+   }
+  ]
+ },
+ {
+  "key": "borscht",
+  "ru": "Борщ",
+  "en": "Borscht",
+  "kcal": 57,
+  "p": 2.7,
+  "f": 3.2,
+  "c": 4.8,
+  "fiber": 1.2,
+  "sugar": 2.5,
+  "servings": [
+   {
+    "ru": "1 миска",
+    "en": "1 bowl",
+    "g": 300
+   }
+  ]
+ },
+ {
+  "key": "chicken-soup",
+  "ru": "Куриный суп с лапшой",
+  "en": "Chicken noodle soup",
+  "kcal": 50,
+  "p": 3.4,
+  "f": 1.9,
+  "c": 4.8,
+  "fiber": 0.4,
+  "sugar": 0.5,
+  "servings": [
+   {
+    "ru": "1 миска",
+    "en": "1 bowl",
+    "g": 300
+   }
+  ]
+ },
+ {
+  "key": "shurpa",
+  "ru": "Сорпа / шурпа",
+  "en": "Shurpa (meat soup)",
+  "kcal": 80,
+  "p": 5.0,
+  "f": 5.0,
+  "c": 4.0,
+  "fiber": 0.8,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 миска",
+    "en": "1 bowl",
+    "g": 300
+   }
+  ]
+ },
+ {
+  "key": "solyanka",
+  "ru": "Солянка",
+  "en": "Solyanka",
+  "kcal": 70,
+  "p": 4.5,
+  "f": 4.5,
+  "c": 2.5,
+  "fiber": 0.5,
+  "sugar": 1.0,
+  "servings": [
+   {
+    "ru": "1 миска",
+    "en": "1 bowl",
+    "g": 300
+   }
+  ]
+ },
+ {
+  "key": "olivier",
+  "ru": "Салат оливье",
+  "en": "Olivier salad",
+  "kcal": 198,
+  "p": 5.5,
+  "f": 16.5,
+  "c": 7.0,
+  "fiber": 1.3,
+  "sugar": 2.0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "caesar",
+  "ru": "Салат цезарь с курицей",
+  "en": "Chicken Caesar salad",
+  "kcal": 190,
+  "p": 11.0,
+  "f": 13.0,
+  "c": 7.0,
+  "fiber": 1.2,
+  "sugar": 1.5,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "pancakes",
+  "ru": "Блины",
+  "en": "Crepes (blini)",
+  "kcal": 233,
+  "p": 6.1,
+  "f": 12.3,
+  "c": 26.0,
+  "fiber": 0.8,
+  "sugar": 5.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 45
+   }
+  ]
+ },
+ {
+  "key": "pizza",
+  "ru": "Пицца",
+  "en": "Pizza",
+  "kcal": 266,
+  "p": 11.0,
+  "f": 10.0,
+  "c": 33.0,
+  "fiber": 2.3,
+  "sugar": 3.6,
+  "servings": [
+   {
+    "ru": "1 ломтик",
+    "en": "1 slice",
+    "g": 110
+   }
+  ]
+ },
+ {
+  "key": "burger",
+  "ru": "Бургер",
+  "en": "Hamburger",
+  "kcal": 254,
+  "p": 13.0,
+  "f": 11.0,
+  "c": 25.0,
+  "fiber": 1.4,
+  "sugar": 5.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 220
+   }
+  ]
+ },
+ {
+  "key": "sushi-roll",
+  "ru": "Ролл с лососем",
+  "en": "Salmon roll",
+  "kcal": 170,
+  "p": 6.5,
+  "f": 4.5,
+  "c": 26.0,
+  "fiber": 0.5,
+  "sugar": 5.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 30
+   },
+   {
+    "ru": "8 шт",
+    "en": "8 pieces",
+    "g": 240
+   }
+  ]
+ },
+ {
+  "key": "golubtsy",
+  "ru": "Голубцы",
+  "en": "Cabbage rolls",
+  "kcal": 130,
+  "p": 7.0,
+  "f": 7.0,
+  "c": 10.0,
+  "fiber": 1.5,
+  "sugar": 2.5,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 150
+   }
+  ]
+ },
+ {
+  "key": "goulash",
+  "ru": "Гуляш из говядины",
+  "en": "Beef goulash",
+  "kcal": 145,
+  "p": 14.0,
+  "f": 8.5,
+  "c": 4.0,
+  "fiber": 0.8,
+  "sugar": 1.5,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "chocolate-dark",
+  "ru": "Шоколад тёмный 70%",
+  "en": "Dark chocolate 70%",
+  "kcal": 598,
+  "p": 7.8,
+  "f": 42.6,
+  "c": 45.9,
+  "fiber": 10.9,
+  "sugar": 24.0,
+  "servings": [
+   {
+    "ru": "1 долька",
+    "en": "1 square",
+    "g": 10
+   },
+   {
+    "ru": "1 плитка",
+    "en": "1 bar",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "key": "chocolate-milk",
+  "ru": "Шоколад молочный",
+  "en": "Milk chocolate",
+  "kcal": 535,
+  "p": 7.7,
+  "f": 29.7,
+  "c": 59.4,
+  "fiber": 3.4,
+  "sugar": 51.5,
+  "servings": [
+   {
+    "ru": "1 долька",
+    "en": "1 square",
+    "g": 10
+   },
+   {
+    "ru": "1 плитка",
+    "en": "1 bar",
+    "g": 100
+   }
+  ]
+ },
+ {
+  "key": "cookies",
+  "ru": "Печенье",
+  "en": "Cookies",
+  "kcal": 450,
+  "p": 6.5,
+  "f": 17.0,
+  "c": 68.0,
+  "fiber": 2.0,
+  "sugar": 30.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 12
+   }
+  ]
+ },
+ {
+  "key": "honey",
+  "ru": "Мёд",
+  "en": "Honey",
+  "kcal": 304,
+  "p": 0.3,
+  "f": 0,
+  "c": 82.4,
+  "fiber": 0.2,
+  "sugar": 82.1,
+  "servings": [
+   {
+    "ru": "1 ч. ложка",
+    "en": "1 tsp",
+    "g": 8
+   },
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 21
+   }
+  ]
+ },
+ {
+  "key": "sugar",
+  "ru": "Сахар",
+  "en": "Sugar",
+  "kcal": 387,
+  "p": 0,
+  "f": 0,
+  "c": 100,
+  "fiber": 0,
+  "sugar": 100,
+  "servings": [
+   {
+    "ru": "1 ч. ложка",
+    "en": "1 tsp",
+    "g": 5
+   }
+  ]
+ },
+ {
+  "key": "jam",
+  "ru": "Варенье",
+  "en": "Jam",
+  "kcal": 250,
+  "p": 0.4,
+  "f": 0.1,
+  "c": 65.0,
+  "fiber": 1.0,
+  "sugar": 48.0,
+  "servings": [
+   {
+    "ru": "1 ст. ложка",
+    "en": "1 tbsp",
+    "g": 20
+   }
+  ]
+ },
+ {
+  "key": "ice-cream",
+  "ru": "Мороженое пломбир",
+  "en": "Ice cream",
+  "kcal": 227,
+  "p": 3.2,
+  "f": 15.0,
+  "c": 20.8,
+  "fiber": 0.7,
+  "sugar": 20.0,
+  "servings": [
+   {
+    "ru": "1 стаканчик",
+    "en": "1 cup",
+    "g": 80
+   }
+  ]
+ },
+ {
+  "key": "chak-chak",
+  "ru": "Чак-чак",
+  "en": "Chak-chak",
+  "kcal": 450,
+  "p": 6.0,
+  "f": 20.0,
+  "c": 62.0,
+  "fiber": 1.0,
+  "sugar": 35.0,
+  "servings": [
+   {
+    "ru": "1 порция",
+    "en": "1 serving",
+    "g": 50
+   }
+  ]
+ },
+ {
+  "key": "chips",
+  "ru": "Чипсы",
+  "en": "Potato chips",
+  "kcal": 536,
+  "p": 7.0,
+  "f": 35.0,
+  "c": 53.0,
+  "fiber": 4.4,
+  "sugar": 0.5,
+  "servings": [
+   {
+    "ru": "Маленькая пачка",
+    "en": "Small bag",
+    "g": 28
+   },
+   {
+    "ru": "Пачка",
+    "en": "Bag",
+    "g": 90
+   }
+  ]
+ },
+ {
+  "key": "protein-bar",
+  "ru": "Протеиновый батончик",
+  "en": "Protein bar",
+  "kcal": 360,
+  "p": 30.0,
+  "f": 12.0,
+  "c": 35.0,
+  "fiber": 8.0,
+  "sugar": 5.0,
+  "servings": [
+   {
+    "ru": "1 шт",
+    "en": "1 piece",
+    "g": 60
+   }
+  ]
+ },
+ {
+  "key": "tea-plain",
+  "ru": "Чай без сахара",
+  "en": "Tea, unsweetened",
+  "kcal": 1,
+  "p": 0,
+  "f": 0,
+  "c": 0.2,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 чашка",
+    "en": "1 cup",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "tea-milk-sugar",
+  "ru": "Чай с молоком и сахаром",
+  "en": "Tea with milk and sugar",
+  "kcal": 40,
+  "p": 0.6,
+  "f": 0.6,
+  "c": 8.0,
+  "fiber": 0,
+  "sugar": 8.0,
+  "servings": [
+   {
+    "ru": "1 чашка",
+    "en": "1 cup",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "coffee-black",
+  "ru": "Кофе чёрный",
+  "en": "Black coffee",
+  "kcal": 2,
+  "p": 0.3,
+  "f": 0,
+  "c": 0,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "1 чашка",
+    "en": "1 cup",
+    "g": 200
+   }
+  ]
+ },
+ {
+  "key": "cappuccino",
+  "ru": "Капучино",
+  "en": "Cappuccino",
+  "kcal": 45,
+  "p": 2.4,
+  "f": 2.4,
+  "c": 3.6,
+  "fiber": 0,
+  "sugar": 3.6,
+  "servings": [
+   {
+    "ru": "Средний",
+    "en": "Medium",
+    "g": 300
+   }
+  ]
+ },
+ {
+  "key": "latte",
+  "ru": "Латте",
+  "en": "Latte",
+  "kcal": 54,
+  "p": 2.8,
+  "f": 2.9,
+  "c": 4.4,
+  "fiber": 0,
+  "sugar": 4.4,
+  "servings": [
+   {
+    "ru": "Средний",
+    "en": "Medium",
+    "g": 350
+   }
+  ]
+ },
+ {
+  "key": "orange-juice",
+  "ru": "Сок апельсиновый",
+  "en": "Orange juice",
+  "kcal": 45,
+  "p": 0.7,
+  "f": 0.2,
+  "c": 10.4,
+  "fiber": 0.2,
+  "sugar": 8.4,
+  "servings": [
+   {
+    "ru": "1 стакан",
+    "en": "1 glass",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "cola",
+  "ru": "Кола",
+  "en": "Cola",
+  "kcal": 42,
+  "p": 0,
+  "f": 0,
+  "c": 10.6,
+  "fiber": 0,
+  "sugar": 10.6,
+  "servings": [
+   {
+    "ru": "1 банка",
+    "en": "1 can",
+    "g": 330
+   },
+   {
+    "ru": "0,5 л",
+    "en": "0.5 L",
+    "g": 500
+   }
+  ]
+ },
+ {
+  "key": "compote",
+  "ru": "Компот",
+  "en": "Fruit compote",
+  "kcal": 60,
+  "p": 0.2,
+  "f": 0,
+  "c": 15.0,
+  "fiber": 0.2,
+  "sugar": 14.0,
+  "servings": [
+   {
+    "ru": "1 стакан",
+    "en": "1 glass",
+    "g": 250
+   }
+  ]
+ },
+ {
+  "key": "protein-shake",
+  "ru": "Протеиновый коктейль (на воде)",
+  "en": "Protein shake (water)",
+  "kcal": 120,
+  "p": 24.0,
+  "f": 1.5,
+  "c": 3.0,
+  "fiber": 0.5,
+  "sugar": 1.5,
+  "servings": [
+   {
+    "ru": "1 скуп",
+    "en": "1 scoop",
+    "g": 30
+   }
+  ]
+ },
+ {
+  "key": "beer",
+  "ru": "Пиво",
+  "en": "Beer",
+  "kcal": 43,
+  "p": 0.5,
+  "f": 0,
+  "c": 3.6,
+  "fiber": 0,
+  "sugar": 0,
+  "servings": [
+   {
+    "ru": "0,5 л",
+    "en": "0.5 L",
+    "g": 500
+   }
+  ]
+ }
+]

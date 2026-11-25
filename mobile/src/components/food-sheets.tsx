@@ -107,11 +107,13 @@ const scaled = (r: Row): FoodItem => {
 export function ScanSheet({
   photo,
   date,
+  initialMeal,
   onClose,
   onSaved,
 }: {
   photo: Photo | null;
   date: string;
+  initialMeal?: Meal;
   onClose: () => void;
   onSaved: () => void;
 }) {
@@ -145,7 +147,7 @@ export function ScanSheet({
     setAnalysis(null);
     setRows([]);
     setHint('');
-    setMeal(mealForNow());
+    setMeal(initialMeal ?? mealForNow());
     analyze(photo);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [photo]);
@@ -316,11 +318,13 @@ function MacroPill({ label, value, color }: { label: string; value: number; colo
 export function ManualSheet({
   visible,
   date,
+  initialMeal,
   onClose,
   onSaved,
 }: {
   visible: boolean;
   date: string;
+  initialMeal?: Meal;
   onClose: () => void;
   onSaved: () => void;
 }) {
@@ -344,7 +348,7 @@ export function ManualSheet({
       setP('');
       setF('');
       setC('');
-      setMeal(mealForNow());
+      setMeal(initialMeal ?? mealForNow());
       setError(null);
     }
   }, [visible]);

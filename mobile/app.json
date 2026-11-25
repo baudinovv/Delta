@@ -33,6 +33,13 @@
           "cameraPermission": "Delta uses the camera to photograph meals and estimate calories.",
           "photosPermission": "Delta reads a photo you pick to estimate its calories."
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Delta uses the camera to scan barcodes and photograph meals.",
+          "recordAudioAndroid": false
+        }
       ]
     ],
     "scheme": "delta",
