@@ -30,6 +30,10 @@ public class CoachMessage {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    /** JSON list of {@link CoachTools.Action}s the coach performed for this reply, or null. */
+    @Column(columnDefinition = "TEXT")
+    private String actions;
+
     protected CoachMessage() {}
 
     public CoachMessage(UUID id, UUID userId, String role, String content, Instant createdAt) {
@@ -45,4 +49,6 @@ public class CoachMessage {
     public String getRole() { return role; }
     public String getContent() { return content; }
     public Instant getCreatedAt() { return createdAt; }
+    public String getActions() { return actions; }
+    public void setActions(String actions) { this.actions = actions; }
 }

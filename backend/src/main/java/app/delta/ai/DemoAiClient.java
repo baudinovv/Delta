@@ -33,6 +33,17 @@ public class DemoAiClient implements AiClient {
     }
 
     @Override
+    public String chatWithTools(String system, List<Turn> turns, List<Tool> tools, ToolExecutor executor) {
+        return chat(system, turns);
+    }
+
+    @Override
+    public String transcribe(Image audio, String lang) {
+        return "ru".equals(lang) ? "Демо-режим: голос распознаётся, когда подключён GEMINI_API_KEY."
+                : "Demo mode: voice is transcribed once GEMINI_API_KEY is set.";
+    }
+
+    @Override
     public JsonNode structured(String system, String prompt, Image image, Map<String, Object> schema) {
         boolean ru = system.contains("LANG=ru");
         return json.valueToTree(Map.of(

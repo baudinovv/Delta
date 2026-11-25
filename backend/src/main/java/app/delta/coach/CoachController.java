@@ -31,6 +31,18 @@ public class CoachController {
 
     public record Ask(@NotBlank @Size(max = 2000) String text, @Pattern(regexp = "ru|en") String lang) {}
 
+    public record Voice(@NotBlank @Size(max = 6_000_000) String audioBase64,
+                        @NotBlank @Pattern(regexp = "audio/[a-z0-9.+-]+(;.*)?") String mimeType,
+                        @Pattern(regexp = "ru|en") String lang) {}
+
+    /** Voice message: transcribed by the AI, then answered like a typed one (actions included). */
+    @PostMapping("/voice")
+    public CoachService.VoiceReply voice(@RequestAttribute(AuthInterceptor.USER_ID) UUID userId,
+                                         @Valid @RequestBody Voice body) {
+        String mime = body.mimeType().contains(";") ? body.mimeType().substring(0, body.mimeType().indexOf(';')) : body.mimeType();
+        return coach.voice(userId, body.audioBase64(), mime, body.lang() == null ? "en" : body.lang());
+    }
+
     @GetMapping
     public Thread thread(@RequestAttribute(AuthInterceptor.USER_ID) UUID userId) {
         return coach.thread(userId);

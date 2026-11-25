@@ -70,6 +70,12 @@
             "minSdkVersion": 26
           }
         }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Delta uses the microphone for voice messages to your AI coach."
+        }
       ]
     ],
     "scheme": "delta",

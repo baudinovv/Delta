@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 import {
   KeyboardAvoidingView,
@@ -14,7 +14,9 @@ import {
 
 import Animated, { FadeIn, FadeInDown, FadeOut, ZoomIn } from 'react-native-reanimated';
 
+import { ActionChips } from '@/components/coach-actions';
 import { Appear, haptic, PressScale, TypingDots } from '@/components/motion';
+import { RecordingBar, useVoice } from '@/components/voice-recorder';
 import { Banner, ErrorText, IconButton, Loading, Screen } from '@/components/ui';
 import { api, type CoachMessage } from '@/lib/api';
 import { errorText, useI18n } from '@/lib/i18n';
@@ -26,6 +28,7 @@ const clean = (s: string) => s.replace(/\*\*/g, '').replace(/^#+\s*/gm, '');
 export default function CoachScreen() {
   const token = useToken();
   const { t, lang } = useI18n();
+  const params = useLocalSearchParams<{ ask?: string }>();
   const [messages, setMessages] = useState<CoachMessage[] | null>(null);
   const [demo, setDemo] = useState(false);
   const [text, setText] = useState('');
@@ -66,6 +69,7 @@ export default function CoachScreen() {
       haptic('tap');
       const reply = await api.askCoach(token, q, lang);
       setMessages((m) => [...(m ?? []), reply]);
+      if (reply.actions?.length) haptic('success');
     } catch (e) {
       setMessages((m) => (m ?? []).filter((x) => x.id !== pending.id));
       setText(q);
@@ -74,6 +78,43 @@ export default function CoachScreen() {
       setSending(false);
     }
   };
+
+  /** Voice: show "Recognizing…" right away, then swap in what was heard and the reply. */
+  const sendVoice = async (base64: string, mime: string) => {
+    const pending: CoachMessage = {
+      id: `voice-${Date.now()}`,
+      role: 'user',
+      content: t('coach.listening'),
+      createdAt: new Date().toISOString(),
+    };
+    setMessages((m) => [...(m ?? []), pending]);
+    setSending(true);
+    setError(null);
+    try {
+      const r = await api.askCoachVoice(token, base64, mime, lang);
+      setMessages((m) => [...(m ?? []).map((x) => (x.id === pending.id ? { ...x, content: r.transcript } : x)), r.reply]);
+      if (r.reply.actions?.length) haptic('success');
+    } catch (e) {
+      setMessages((m) => (m ?? []).filter((x) => x.id !== pending.id));
+      setError(errorText(e, t));
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const voice = useVoice(sendVoice, setError);
+
+  // "Ask the coach to make a plan" from the workout tab lands here with ?ask=…
+  useFocusEffect(
+    useCallback(() => {
+      if (params.ask && messages != null && !sending) {
+        const q = params.ask;
+        router.setParams({ ask: undefined });
+        send(q);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [params.ask, messages == null]),
+  );
 
   const clear = async () => {
     try {
@@ -116,6 +157,10 @@ export default function CoachScreen() {
                 <Ionicons name="sparkles" size={28} color={colors.accentInk} />
               </Animated.View>
               <Text style={[type.body, { textAlign: 'center', color: colors.muted }]}>{t('coach.empty')}</Text>
+              <View style={styles.voiceHint}>
+                <Ionicons name="mic" size={16} color={colors.accent} />
+                <Text style={[type.small, { flex: 1 }]}>{t('coach.voiceHint')}</Text>
+              </View>
               <View style={styles.suggestions}>
                 {suggestions.map((s, i) => (
                   <Appear key={s} index={i + 2}>
@@ -149,10 +194,13 @@ export default function CoachScreen() {
                 <View style={styles.avatar}>
                   <Ionicons name="sparkles" size={14} color={colors.accentInk} />
                 </View>
-                <View style={[styles.bubble, styles.theirs]}>
-                  <Text style={[type.body, { lineHeight: 23 }]} selectable>
-                    {clean(m.content)}
-                  </Text>
+                <View style={styles.coachColumn}>
+                  <View style={[styles.bubble, styles.theirs, { maxWidth: '100%' }]}>
+                    <Text style={[type.body, { lineHeight: 23 }]} selectable>
+                      {clean(m.content)}
+                    </Text>
+                  </View>
+                  {m.actions && m.actions.length > 0 && <ActionChips actions={m.actions} />}
                 </View>
               </Animated.View>
             ),
@@ -175,26 +223,33 @@ export default function CoachScreen() {
           <ErrorText message={error} />
         </ScrollView>
 
-        <View style={styles.inputBar}>
-          <TextInput
-            value={text}
-            onChangeText={setText}
-            placeholder={t('coach.placeholder')}
-            placeholderTextColor={colors.faint}
-            style={styles.input}
-            multiline
-            maxLength={2000}
-            onSubmitEditing={() => send()}
-            blurOnSubmit={Platform.OS === 'web'}
+        {voice.active ? (
+          <RecordingBar
+            seconds={voice.seconds}
+            levels={voice.levels}
+            onCancel={() => voice.stop(false)}
+            onSend={() => voice.stop(true)}
           />
-          <IconButton
-            icon="arrow-up"
-            label="send"
-            tone={text.trim() ? 'accent' : 'surface'}
-            size={44}
-            onPress={() => send()}
-          />
-        </View>
+        ) : (
+          <View style={styles.inputBar}>
+            <TextInput
+              value={text}
+              onChangeText={setText}
+              placeholder={t('coach.placeholder')}
+              placeholderTextColor={colors.faint}
+              style={styles.input}
+              multiline
+              maxLength={2000}
+              onSubmitEditing={() => send()}
+              blurOnSubmit={Platform.OS === 'web'}
+            />
+            {text.trim() ? (
+              <IconButton icon="arrow-up" label="send" tone="accent" size={44} onPress={() => send()} />
+            ) : (
+              <IconButton icon="mic" label="voice" tone="surface" size={44} onPress={() => !sending && voice.start()} />
+            )}
+          </View>
+        )}
         <Text style={styles.disclaimer}>{t('coach.disclaimer')}</Text>
       </KeyboardAvoidingView>
     </Screen>
@@ -226,6 +281,16 @@ const styles = StyleSheet.create({
   bubble: { maxWidth: '86%', borderRadius: radius.lg, paddingHorizontal: space(4), paddingVertical: space(3) },
   mine: { alignSelf: 'flex-end', backgroundColor: colors.accent, borderBottomRightRadius: 6 },
   theirs: { backgroundColor: colors.surface, borderBottomLeftRadius: 6, flexShrink: 1 },
+  coachColumn: { flexShrink: 1, maxWidth: '86%', gap: space(1) },
+  voiceHint: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space(2),
+    backgroundColor: colors.accentSoft,
+    borderRadius: radius.md,
+    padding: space(3),
+    alignSelf: 'stretch',
+  },
   coachRow: { flexDirection: 'row', alignItems: 'flex-end', gap: space(2) },
   avatar: {
     width: 26,

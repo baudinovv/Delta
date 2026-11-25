@@ -18,6 +18,8 @@ Tests: `mvn test` (or without local Java: `docker run --rm -v "$PWD/backend":/ap
 
 ### AI (coach + calories from a photo)
 
+The coach uses Gemini function calling: "запиши присед 60 на 5 три подхода", "на обед плов и айран", "выпил пол литра воды", "мой вес 71.5", "составь план на неделю" are executed through the normal services (same validation as the app), and the chat shows what was done with an Undo button. Voice messages are recorded in the app (expo-audio, works in Expo Go and the browser) and transcribed by Gemini.
+
 Uses Google Gemini, which has a free tier. Get a key at https://aistudio.google.com/apikey and put it in `.env` next to `docker-compose.yml`:
 
 ```
@@ -33,7 +35,7 @@ Without a key the backend runs in **demo mode**: the coach and photo analysis re
 cd mobile
 npm ci
 cp .env.example .env
-npx expo start
+npm start            # = npx expo start --go (Expo Go QR code)
 ```
 
 **Phone (Expo Go):** put your computer's local IP in `.env` (`EXPO_PUBLIC_API_URL=http://192.168.x.x:8080`, find it with `hostname -I` / `ipconfig getifaddr en0`), scan the QR (camera on iOS, Expo Go on Android). Phone and laptop on the same Wi-Fi. Restart with `npx expo start -c` after changing `.env`.
@@ -48,7 +50,7 @@ Health sync uses native modules, so it **does not work in Expo Go** (the Health 
 cd mobile
 npx eas-cli login                                       # free expo.dev account
 npx eas-cli build --profile development --platform android   # APK, install it on the phone
-npx expo start --dev-client
+npm run start:dev-client
 ```
 
 - **Android:** Health Connect is built into Android 14+. On Android 9–13 install "Health Connect" from Google Play first (the app shows a button for it). Delta reads steps, active calories, heart rate and workouts (e.g. from Galaxy Watch / Wear OS via their apps) and writes logged strength sessions as workouts.
@@ -89,8 +91,10 @@ Troubleshooting:
 | DELETE | `/api/foods/{id}` | delete an own food or recipe |
 | DELETE | `/api/nutrition/entries/{id}` | delete a food item |
 | POST | `/api/nutrition/analyze` | photo (base64 JPEG) → dish, items with grams/kcal/macros. Nothing is saved until the user confirms |
-| GET | `/api/coach/messages` | AI coach chat history |
-| POST | `/api/coach/messages` | ask the coach; it sees the profile, last 14 days of sets and today's food |
+| GET | `/api/coach/messages` | AI coach chat history (coach replies carry the `actions` they performed) |
+| POST | `/api/coach/messages` | ask the coach; it sees the profile, last 14 days of sets, today's food, health data and the plan, and can act: log sets, log food (catalog first, its own estimate otherwise), add water, update weight, save a weekly plan, read a day. Returns the reply with `actions` (ids for undo) |
+| POST | `/api/coach/messages/voice` | voice message (base64 audio: wav / aac / webm) → `{transcript, reply}`; Gemini transcribes, then it's handled like a typed message |
+| GET · DELETE | `/api/plan` | the weekly workout plan the coach saved (204 when none) |
 | DELETE | `/api/coach/messages` | clear the chat |
 | GET | `/api/health/status` | health sync consent, last sync, number of stored samples |
 | PUT | `/api/health/consent` | `{consent: true\|false}`; false also deletes all synced health data |

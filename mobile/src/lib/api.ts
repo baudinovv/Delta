@@ -154,7 +154,19 @@ export type Analysis = {
   demo: boolean;
 };
 
-export type CoachMessage = { id: string; role: 'user' | 'coach'; content: string; createdAt: string };
+export type CoachActionType = 'SET' | 'FOOD' | 'WATER' | 'WEIGHT' | 'PLAN';
+/** Something the AI coach did; ids/ml let the app undo it. */
+export type CoachAction = { type: CoachActionType; label: string; ids?: string[]; ml?: number; date?: string };
+export type CoachMessage = {
+  id: string;
+  role: 'user' | 'coach';
+  content: string;
+  createdAt: string;
+  actions?: CoachAction[];
+};
+export type PlannedExercise = { name: string; sets: number; reps: string; weightKg?: number | null; note?: string | null };
+export type PlanDay = { weekday: number; focus: string; exercises: PlannedExercise[] };
+export type WorkoutPlan = { title: string; days: PlanDay[]; createdAt: string };
 export type CoachThread = { messages: CoachMessage[]; demo: boolean };
 
 export type DashboardDay = { date: string; kcal: number; sets: number; volumeKg: number };
@@ -367,6 +379,17 @@ export const api = {
 
   askCoach: (token: string, text: string, lang: Lang) =>
     request<CoachMessage>('/api/coach/messages', { method: 'POST', token, body: JSON.stringify({ text, lang }) }),
+
+  askCoachVoice: (token: string, audioBase64: string, mimeType: string, lang: Lang) =>
+    request<{ transcript: string; reply: CoachMessage }>('/api/coach/messages/voice', {
+      method: 'POST',
+      token,
+      body: JSON.stringify({ audioBase64, mimeType, lang }),
+    }),
+
+  plan: (token: string) => request<WorkoutPlan | undefined>('/api/plan', { token }),
+
+  deletePlan: (token: string) => request<void>('/api/plan', { method: 'DELETE', token }),
 
   clearCoach: (token: string) => request<void>('/api/coach/messages', { method: 'DELETE', token }),
 

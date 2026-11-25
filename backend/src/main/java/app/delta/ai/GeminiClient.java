@@ -45,7 +45,64 @@ public class GeminiClient implements AiClient {
         for (Turn t : turns) {
             contents.add(Map.of("role", t.fromUser() ? "user" : "model", "parts", List.of(Map.of("text", t.text()))));
         }
-        return text(generate(system, contents, null));
+        return text(generate(system, contents, null, null));
+    }
+
+    @Override
+    public String chatWithTools(String system, List<Turn> turns, List<Tool> tools, ToolExecutor executor) {
+        List<Object> contents = new ArrayList<>();
+        for (Turn t : turns) {
+            contents.add(Map.of("role", t.fromUser() ? "user" : "model", "parts", List.of(Map.of("text", t.text()))));
+        }
+        List<Map<String, Object>> declarations = tools.stream()
+                .map(t -> Map.<String, Object>of("name", t.name(), "description", t.description(), "parameters", t.parameters()))
+                .toList();
+        Map<String, Object> extra = Map.of("tools", List.of(Map.of("functionDeclarations", declarations)));
+
+        for (int round = 0; round < MAX_TOOL_ROUNDS; round++) {
+            JsonNode response = generate(system, contents, null, extra);
+            JsonNode content = response == null ? null : response.path("candidates").path(0).path("content");
+            if (content == null || content.isMissingNode()) throw unavailable();
+            List<JsonNode> calls = new ArrayList<>();
+            for (JsonNode part : content.path("parts")) {
+                if (part.has("functionCall")) calls.add(part.get("functionCall"));
+            }
+            if (calls.isEmpty()) return text(response);
+
+            // Send the model's turn back unchanged: Gemini 2.5 needs its thought signatures to continue.
+            contents.add(content);
+            List<Object> results = new ArrayList<>();
+            for (JsonNode call : calls) {
+                String name = call.path("name").asText();
+                Map<String, Object> result;
+                try {
+                    result = executor.call(name, call.path("args"));
+                } catch (ApiException e) {
+                    result = Map.of("error", e.getMessage());
+                } catch (RuntimeException e) {
+                    log.warn("Tool {} failed", name, e);
+                    result = Map.of("error", "Could not do that.");
+                }
+                results.add(Map.of("functionResponse", Map.of("name", name, "response", result)));
+            }
+            contents.add(Map.of("role", "user", "parts", results));
+        }
+        throw unavailable();
+    }
+
+    @Override
+    public String transcribe(Image audio, String lang) {
+        String system = "You transcribe short voice messages to a fitness app. Output only the exact words spoken, "
+                + "in the language spoken (usually " + ("ru".equals(lang) ? "Russian" : "English")
+                + "), with normal punctuation and digits for numbers. If there is no intelligible speech, output nothing.";
+        List<Object> parts = List.of(
+                Map.of("inline_data", Map.of("mime_type", audio.mimeType(), "data", audio.base64())),
+                Map.of("text", "Transcribe this."));
+        JsonNode r = generate(system, List.of(Map.of("role", "user", "parts", parts)), null, null);
+        JsonNode p = r == null ? null : r.path("candidates").path(0).path("content").path("parts");
+        StringBuilder out = new StringBuilder();
+        if (p != null && p.isArray()) for (JsonNode x : p) if (!x.path("thought").asBoolean(false)) out.append(x.path("text").asText(""));
+        return out.toString().trim();
     }
 
     @Override
@@ -56,7 +113,7 @@ public class GeminiClient implements AiClient {
         }
         parts.add(Map.of("text", prompt));
         var config = Map.of("responseMimeType", "application/json", "responseSchema", schema);
-        String raw = text(generate(system, List.of(Map.of("role", "user", "parts", parts)), config));
+        String raw = text(generate(system, List.of(Map.of("role", "user", "parts", parts)), config, null));
         try {
             return json.readTree(raw);
         } catch (Exception e) {
@@ -65,11 +122,12 @@ public class GeminiClient implements AiClient {
         }
     }
 
-    private JsonNode generate(String system, List<Map<String, Object>> contents, Map<String, Object> config) {
+    private JsonNode generate(String system, List<?> contents, Map<String, Object> config, Map<String, Object> extra) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("systemInstruction", Map.of("parts", List.of(Map.of("text", system))));
         body.put("contents", contents);
         if (config != null) body.put("generationConfig", config);
+        if (extra != null) body.putAll(extra);
         try {
             return http.post()
                     .uri("/models/{model}:generateContent", props.model())

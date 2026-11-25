@@ -7,7 +7,8 @@ import Animated, { FadeInDown, FadeOutLeft, ZoomIn, ZoomOut } from 'react-native
 
 import { CountUp, haptic, listLayout, PressScale } from '@/components/motion';
 import { Button, Card, ErrorText, Field, Loading, Screen, SectionTitle } from '@/components/ui';
-import { api, type LoggedSet, type PrefillRow } from '@/lib/api';
+import { PlanCard, todayWeekday } from '@/components/plan-card';
+import { api, type LoggedSet, type PrefillRow, type WorkoutPlan } from '@/lib/api';
 import { errorText, useI18n } from '@/lib/i18n';
 import { useToken } from '@/lib/session';
 import { colors, radius, space, type } from '@/lib/theme';
@@ -34,12 +35,20 @@ export default function WorkoutScreen() {
   const [savingExercise, setSavingExercise] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [newExercise, setNewExercise] = useState('');
+  const [plan, setPlan] = useState<WorkoutPlan | null | undefined>(undefined);
 
   const load = useCallback(async () => {
     try {
-      const data = await api.today(token);
-      setRows(data.rows);
-      setDrafts(Object.fromEntries(data.rows.map((r) => [r.exercise, toDraft(r)])));
+      const [data, p] = await Promise.all([api.today(token), api.plan(token).catch(() => undefined)]);
+      setPlan(p ?? null);
+      // exercises from today's plan that aren't in the log yet go to the end of the list
+      const known = new Set(data.rows.map((r) => r.exercise.toLowerCase()));
+      const planned = (p?.days.find((d) => d.weekday === todayWeekday())?.exercises ?? [])
+        .filter((e) => !known.has(e.name.toLowerCase()))
+        .map((e): PrefillRow => ({ exercise: e.name, weightKg: e.weightKg ?? undefined, hint: 'plan' }));
+      const rows = [...data.rows, ...planned];
+      setRows(rows);
+      setDrafts(Object.fromEntries(rows.map((r) => [r.exercise, toDraft(r)])));
       setTodaySets(data.todaySets);
       setError(null);
     } catch (e) {
@@ -128,6 +137,8 @@ export default function WorkoutScreen() {
         }>
         <ErrorText message={error} />
 
+        {plan !== undefined && <PlanCard plan={plan} />}
+
         {rows.map((r) => {
           const d = drafts[r.exercise] ?? { weight: '', reps: '' };
           const weight = parseNum(d.weight);
@@ -148,7 +159,11 @@ export default function WorkoutScreen() {
                   </View>
                 )}
               </View>
-              {isNew && <Text style={type.small}>{t('workout.new')}</Text>}
+              {isNew && (
+                <Text style={[type.small, r.hint === 'plan' && { color: colors.accent }]}>
+                  {r.hint === 'plan' ? t('workout.fromPlan') : t('workout.new')}
+                </Text>
+              )}
 
               {done.length > 0 && (
                 <View style={styles.doneRow}>
