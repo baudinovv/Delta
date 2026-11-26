@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "Delta",
+    "slug": "delta",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "app.delta.pilot"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1F2A5C",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "app.delta.pilot"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-localization",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Delta uses the camera to photograph meals and estimate calories.",
+          "photosPermission": "Delta reads a photo you pick to estimate its calories."
+        }
+      ]
+    ],
+    "scheme": "delta",
+    "experiments": {
+      "typedRoutes": true
+    },
+    "backgroundColor": "#F5F5F7"
+  }
+}
